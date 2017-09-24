@@ -60,3 +60,12 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
 
+plugins:
+  - serverless-domain-manager
+
+custom:
+  customDomain:
+    domainName: test.bytabit.net
+    basePath: ''
+    stage: ${self:provider.stage}
+    createRoute53Record: true
