@@ -48,13 +48,72 @@ class Offers {
                 callback(null, response);
             });
         } catch (err) {
-            console.error('Validation Failed: '+err.name);
+            console.error('Validation Failed: ' + err.name);
             callback(null, {
                 statusCode: 400,
                 headers: {'Content-Type': 'text/plain'},
                 body: 'Couldn\'t parse the sell offer.',
             });
         }
+    }
+
+    list(event, callback) {
+
+        const params = {
+            TableName: process.env.DYNAMODB_TABLE
+        };
+
+        // retrieve the offers from the database
+        this.db.scan(params, (error, result) => {
+            // handle potential errors
+            if (error) {
+                console.error(error);
+                callback(null, {
+                    statusCode: error.statusCode || 501,
+                    headers: {'Content-Type': 'text/plain'},
+                    body: 'Couldn\'t fetch the sell offer.',
+                });
+                return;
+            }
+
+            // create a response
+            const response = {
+                statusCode: 200,
+                body: JSON.stringify(result.Items),
+            };
+            callback(null, response);
+        });
+    }
+
+    delete(event, callback) {
+
+        const params = {
+            TableName: process.env.DYNAMODB_TABLE,
+            Key: {
+                sellerEscrowPubKey: event.pathParameters.sellerEscrowPubKey
+            }
+        };
+
+        // delete the offer from the database
+        this.db.delete(params, (error) => {
+            // handle potential errors
+            if (error) {
+                console.error(error);
+                callback(null, {
+                    statusCode: error.statusCode || 501,
+                    headers: {'Content-Type': 'text/plain'},
+                    body: 'Couldn\'t delete the sell offer.',
+                });
+                return;
+            }
+
+            // create a response
+            const response = {
+                statusCode: 200,
+                body: JSON.stringify({}),
+            };
+            callback(null, response);
+        });
     }
 }
 

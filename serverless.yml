@@ -26,6 +26,20 @@ functions:
             path: offers
             method: post
             cors: true
+  list:
+        handler: src/main/js/offers/list.list
+        events:
+          - http:
+              path: offers
+              method: get
+              cors: true
+  delete:
+      handler: src/main/js/offers/delete.delete
+      events:
+        - http:
+            path: offers/{sellerEscrowPubKey}
+            method: delete
+            cors: true
 
 resources:
   Resources:
