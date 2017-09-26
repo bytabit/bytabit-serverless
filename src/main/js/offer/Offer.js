@@ -1,6 +1,6 @@
 'use strict';
 
-class Offers {
+class Offer {
 
     constructor(db) {
         this.db = db;
@@ -12,7 +12,7 @@ class Offers {
         try {
             const data = JSON.parse(event.body);
             const params = {
-                TableName: process.env.DYNAMODB_TABLE,
+                TableName: process.env.OFFER_TABLE,
                 Item: {
                     sellerEscrowPubKey: data.sellerEscrowPubKey,
                     sellerProfilePubKey: data.sellerProfilePubKey,
@@ -60,7 +60,7 @@ class Offers {
     list(event, callback) {
 
         const params = {
-            TableName: process.env.DYNAMODB_TABLE
+            TableName: process.env.OFFER_TABLE
         };
 
         // retrieve the offers from the database
@@ -88,7 +88,7 @@ class Offers {
     delete(event, callback) {
 
         const params = {
-            TableName: process.env.DYNAMODB_TABLE,
+            TableName: process.env.OFFER_TABLE,
             Key: {
                 sellerEscrowPubKey: event.pathParameters.sellerEscrowPubKey
             }
@@ -117,4 +117,4 @@ class Offers {
     }
 }
 
-module.exports = Offers;
+module.exports = Offer;

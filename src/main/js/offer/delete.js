@@ -2,10 +2,10 @@
 
 const AWS = require('aws-sdk');
 const db = new AWS.DynamoDB.DocumentClient();
-const Offers = require('./Offers');
+const Offer = require('./Offer');
 
-let offers = new Offers(db);
+let offer = new Offer(db);
 
 module.exports.delete = (event, context, callback) => {
-    offers.delete(event, callback);
+    offer.delete(event, callback);
 };

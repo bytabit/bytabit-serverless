@@ -1,4 +1,4 @@
-const Offers = require('../../../main/js/offers/offers');
+const Offer = require('../../../main/js/offer/offer');
 
 test('parse event.body', () => {
 
@@ -17,13 +17,13 @@ test('create offer with valid input', () => {
       }
     };
 
-    let offers = new Offers(db);
+    let offer = new Offer(db);
 
     const event = {
         body: '{"arbitratorProfilePubKey":"fTiQZ15v1jYmyvHNZhrzP9DiYosGTqJ23NUfHom7q4No","complete":true,"currencyCode":"SEK","maxAmount":600.00,"minAmount":300.00,"paymentMethod":"SWISH","price":10000.00,"sellerEscrowPubKey":"29GujoVDK8Eqokcwx3b1oNyVYQVwRUYB4R7WoF7az8c87","sellerProfilePubKey":"vKiUC97W5UDxywV9SPzYvQ8Ri9Hxm9QJyeNFLCtjpqfV"}'
     };
 
-    offers.create(event, (param1, response) => {
+    offer.create(event, (param1, response) => {
         expect(response.statusCode).toBe(200);
     })
 });

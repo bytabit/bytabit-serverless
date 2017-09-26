@@ -5,7 +5,8 @@ provider:
   runtime: nodejs6.10
 
   environment:
-      DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+      OFFER_TABLE: ${self:service}-${opt:stage, self:provider.stage}-offer
+      PROFILE_TABLE: ${self:service}-${opt:stage, self:provider.stage}-profile
 
   iamRoleStatements:
       - Effect: Allow
@@ -16,38 +17,75 @@ provider:
           - dynamodb:PutItem
           - dynamodb:UpdateItem
           - dynamodb:DeleteItem
-        Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}"
+        Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.OFFER_TABLE}"
+      - Effect: Allow
+        Action:
+          - dynamodb:Query
+          - dynamodb:Scan
+          - dynamodb:GetItem
+          - dynamodb:PutItem
+          - dynamodb:UpdateItem
+          - dynamodb:DeleteItem
+        Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROFILE_TABLE}"
 
 functions:
-  create:
-      handler: src/main/js/offers/create.create
+  offers-create:
+      handler: src/main/js/offer/create.create
       events:
         - http:
             path: offers
             method: post
             cors: true
-  list:
-        handler: src/main/js/offers/list.list
-        events:
-          - http:
-              path: offers
-              method: get
-              cors: true
-  delete:
-      handler: src/main/js/offers/delete.delete
+  offers-list:
+      handler: src/main/js/offer/list.list
+      events:
+        - http:
+            path: offers
+            method: get
+            cors: true
+  offers-delete:
+      handler: src/main/js/offer/delete.delete
       events:
         - http:
             path: offers/{sellerEscrowPubKey}
             method: delete
             cors: true
+  profiles-create:
+      handler: src/main/js/profile/create.create
+      events:
+        - http:
+            path: profiles
+            method: post
+            cors: true
+  profiles-list:
+      handler: src/main/js/profile/list.list
+      events:
+        - http:
+            path: profiles
+            method: get
+            cors: true
+  profiles-update:
+      handler: src/main/js/profile/update.update
+      events:
+        - http:
+            path: profiles/{pubKey}
+            method: put
+            cors: true
+  profiles-delete:
+      handler: src/main/js/profile/delete.delete
+      events:
+        - http:
+            path: profiles/{pubKey}
+            method: delete
+            cors: true
 
 resources:
   Resources:
-    BytabitDynamoDbTable:
+    BytabitOfferTable:
       Type: 'AWS::DynamoDB::Table'
       DeletionPolicy: Retain
       Properties:
-        TableName: ${self:provider.environment.DYNAMODB_TABLE}
+        TableName: ${self:provider.environment.OFFER_TABLE}
         AttributeDefinitions:
           -
             AttributeName: sellerEscrowPubKey
@@ -59,6 +97,23 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+
+    BytabitProfileTable:
+          Type: 'AWS::DynamoDB::Table'
+          DeletionPolicy: Retain
+          Properties:
+            TableName: ${self:provider.environment.PROFILE_TABLE}
+            AttributeDefinitions:
+              -
+                AttributeName: pubKey
+                AttributeType: S
+            KeySchema:
+              -
+                AttributeName: pubKey
+                KeyType: HASH
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
 
 plugins:
   - serverless-domain-manager
