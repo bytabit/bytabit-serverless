@@ -11,17 +11,44 @@ class Trade {
 
         try {
             const data = JSON.parse(event.body);
-            if (!data.hasOwnProperty('userName') || data['userName'].length < 1) {data['userName'] = null}
-            if (!data.hasOwnProperty('phoneNum') || data['phoneNum'].length < 1) {data['phoneNum'] = null}
 
             const params = {
-                TableName: process.env.PROFILE_TABLE,
+                TableName: process.env.TRADE_TABLE,
                 Item: {
-                    pubKey: data.pubKey,
-                    isArbitrator: data.isArbitrator,
-                    userName: data.userName,
-                    phoneNum: data.phoneNum,
-                    created: timestamp,
+                    // Sell Offer
+                    escrowAddress: data.escrowAddress,
+                    sellerEscrowPubKey: data.sellerEscrowPubKey,
+                    sellerProfilePubKey: data.sellerProfilePubKey,
+                    arbitratorProfilePubKey: data.arbitratorProfilePubKey,
+                    currencyCode: data.currencyCode,
+                    paymentMethod: data.paymentMethod,
+                    minAmount: data.minAmount,
+                    maxAmount: data.maxAmount,
+                    price: data.price,
+
+                    // Buy Request
+                    buyerEscrowPubKey: data.buyerEscrowPubKey,
+                    btcAmount: data.btcAmount,
+                    buyerProfilePubKey: data.buyerProfilePubKey,
+                    buyerPayoutAddress: data.buyerPayoutAddress,
+
+                    // Payment Request
+                    fundingTxHash: data.fundingTxHash,
+                    paymentDetails: data.paymentDetails,
+                    refundAddress: data.refundAddress,
+                    refundTxSignature: data.refundTxSignature,
+
+                    // Payout Request
+                    paymentReference: data.paymentReference,
+                    payoutTxSignature: data.payoutTxSignature,
+
+                    // Arbitrate Request
+                    arbitrationReason: data.arbitrationReason,
+
+                    // Payout Completed
+                    payoutTxHash: data.payoutTxHash,
+                    payoutReason: data.payoutReason,
+
                     updated: timestamp
                 }
             };
@@ -34,12 +61,12 @@ class Trade {
                     callback(null, {
                         statusCode: error.statusCode || 501,
                         headers: {'Content-Type': 'text/plain'},
-                        body: 'Couldn\'t create the profile.',
+                        body: 'Couldn\'t put the trade.',
                     });
                     return;
                 }
 
-                // create a response
+                // put a response
                 const response = {
                     statusCode: 200,
                     body: JSON.stringify(params.Item),
@@ -51,120 +78,76 @@ class Trade {
             callback(null, {
                 statusCode: 400,
                 headers: {'Content-Type': 'text/plain'},
-                body: 'Couldn\'t parse the profile.',
+                body: 'Couldn\'t parse the trade.',
             });
         }
     }
 
     list(event, callback) {
 
-        const params = {
-            TableName: process.env.PROFILE_TABLE
-        };
+        const profilePubKey = event["queryStringParameters"]['profilePubKey'];
 
-        // retrieve the offers from the database
-        this.db.scan(params, (error, result) => {
-            // handle potential errors
-            if (error) {
-                console.error(error);
-                callback(null, {
-                    statusCode: error.statusCode || 501,
-                    headers: {'Content-Type': 'text/plain'},
-                    body: 'Couldn\'t fetch the profiles.',
-                });
-                return;
-            }
-
-            // create a response
-            const response = {
-                statusCode: 200,
-                body: JSON.stringify(result.Items),
-            };
-            callback(null, response);
-        });
-    }
-
-    update(event, callback) {
-        const timestamp = new Date().getTime();
-
-        try {
-            const data = JSON.parse(event.body);
-            if (!data.hasOwnProperty('userName') || data['userName'].length < 1) {data['userName'] = null}
-            if (!data.hasOwnProperty('phoneNum') || data['phoneNum'].length < 1) {data['phoneNum'] = null}
-
-            const params = {
-                TableName: process.env.PROFILE_TABLE,
-                Key: {
-                    pubKey: event.pathParameters.pubKey,
-                },
+        function params(indexName, keyName) {
+            return {
+                TableName: process.env.TRADE_TABLE,
+                IndexName: indexName,
                 ExpressionAttributeValues: {
-                    ':isArbitrator': data.isArbitrator,
-                    ':userName': data.userName,
-                    ':phoneNum': data.phoneNum,
-                    ':updated': timestamp
+                    ":pubKey": profilePubKey
                 },
-                UpdateExpression: 'SET isArbitrator = :isArbitrator, userName = :userName, phoneNum = :phoneNum, updated = :updated',
-                ReturnValues: 'ALL_NEW'
+                KeyConditionExpression: keyName + "= :pubKey"
             };
+        }
 
-            // write the offer to the database
-            this.db.update(params, (error, result) => {
+        const sellerPromise = new Promise((resolve, reject) => {
+            // retrieve the trades from the database
+            this.db.query(params('sellerIndex', 'sellerProfilePubKey'), (error, result) => {
                 // handle potential errors
                 if (error) {
                     console.error(error);
-                    callback(null, {
-                        statusCode: error.statusCode || 501,
-                        headers: {'Content-Type': 'text/plain'},
-                        body: 'Couldn\'t update the profile.',
-                    });
-                    return;
+                    reject(error);
                 }
-
-                // create a response
-                const response = {
-                    statusCode: 200,
-                    body: JSON.stringify(result.Attributes),
-                };
-                callback(null, response);
+                resolve(result.Items);
             });
-        } catch (err) {
-            console.error('Validation Failed: ' + err.name);
-            callback(null, {
-                statusCode: 400,
-                headers: {'Content-Type': 'text/plain'},
-                body: 'Couldn\'t parse the profile.',
+        });
+
+        const buyerPromise = new Promise((resolve, reject) => {
+            // retrieve the trades from the database
+            this.db.query(params('buyerIndex', 'buyerProfilePubKey'), (error, result) => {
+                // handle potential errors
+                if (error) {
+                    console.error(error);
+                    reject(error);
+                }
+                resolve(result.Items);
             });
-        }
-    }
+        });
 
-    delete(event, callback) {
+        const arbitratorPromise = new Promise((resolve, reject) => {
+            // retrieve the trades from the database
+            this.db.query(params('arbitratorIndex', 'arbitratorProfilePubKey'), (error, result) => {
+                // handle potential errors
+                if (error) {
+                    console.error(error);
+                    reject(error);
+                }
+                resolve(result.Items);
+            });
+        });
 
-        const params = {
-            TableName: process.env.PROFILE_TABLE,
-            Key: {
-                sellerEscrowPubKey: event.pathParameters.sellerEscrowPubKey
-            }
-        };
-
-        // delete the offer from the database
-        this.db.delete(params, (error) => {
-            // handle potential errors
-            if (error) {
-                console.error(error);
-                callback(null, {
-                    statusCode: error.statusCode || 501,
-                    headers: {'Content-Type': 'text/plain'},
-                    body: 'Couldn\'t delete the profile.',
-                });
-                return;
-            }
-
-            // create a response
+        Promise.all([sellerPromise, buyerPromise, arbitratorPromise]).then(items => {
+            // if resolve
             const response = {
                 statusCode: 200,
-                body: JSON.stringify({}),
+                body: JSON.stringify([].concat.apply([], items))
             };
             callback(null, response);
+        }).catch(error => {
+            // if reject
+            callback(null, {
+                statusCode: error.statusCode || 501,
+                headers: {'Content-Type': 'text/plain'},
+                body: 'Couldn\'t fetch the trades by sellerProfilePubKey.',
+            });
         });
     }
 }

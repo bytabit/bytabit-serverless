@@ -7,6 +7,7 @@ provider:
   environment:
       OFFER_TABLE: ${self:service}-${opt:stage, self:provider.stage}-offer
       PROFILE_TABLE: ${self:service}-${opt:stage, self:provider.stage}-profile
+      TRADE_TABLE: ${self:service}-${opt:stage, self:provider.stage}-trade
 
   iamRoleStatements:
       - Effect: Allow
@@ -20,6 +21,10 @@ provider:
         Resource:
           - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.OFFER_TABLE}"
           - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.PROFILE_TABLE}"
+          - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.TRADE_TABLE}"
+          - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.TRADE_TABLE}/index/sellerIndex"
+          - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.TRADE_TABLE}/index/buyerIndex"
+          - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.TRADE_TABLE}/index/arbitratorIndex"
 
 functions:
   profiles-create:
@@ -65,43 +70,144 @@ functions:
             path: offers/{sellerEscrowPubKey}
             method: delete
             cors: true
+  trades-create:
+      handler: src/main/js/trade/create.create
+      events:
+        - http:
+            path: trades/{sellerEscrowPubKey}
+            method: put
+            cors: true
+  trades-list:
+      handler: src/main/js/trade/list.list
+      events:
+        - http:
+            path: trades
+            method: get
+            cors: true
 
 resources:
   Resources:
 
     BytabitProfileTable:
           Type: 'AWS::DynamoDB::Table'
-          DeletionPolicy: Retain
+          DeletionPolicy: Delete
           Properties:
             TableName: ${self:provider.environment.PROFILE_TABLE}
             AttributeDefinitions:
               -
                 AttributeName: pubKey
                 AttributeType: S
+              -
+                AttributeName: updated
+                AttributeType: N
             KeySchema:
               -
                 AttributeName: pubKey
                 KeyType: HASH
+              -
+                AttributeName: updated
+                KeyType: RANGE
             ProvisionedThroughput:
               ReadCapacityUnits: 1
               WriteCapacityUnits: 1
 
     BytabitOfferTable:
           Type: 'AWS::DynamoDB::Table'
-          DeletionPolicy: Retain
+          DeletionPolicy: Delete
           Properties:
             TableName: ${self:provider.environment.OFFER_TABLE}
             AttributeDefinitions:
               -
                 AttributeName: sellerEscrowPubKey
                 AttributeType: S
+              -
+                AttributeName: updated
+                AttributeType: N
             KeySchema:
               -
                 AttributeName: sellerEscrowPubKey
                 KeyType: HASH
+              -
+                AttributeName: updated
+                KeyType: RANGE
             ProvisionedThroughput:
               ReadCapacityUnits: 1
               WriteCapacityUnits: 1
+
+    BytabitTradeTable:
+          Type: 'AWS::DynamoDB::Table'
+          DeletionPolicy: Delete
+          Properties:
+            TableName: ${self:provider.environment.TRADE_TABLE}
+            AttributeDefinitions:
+              -
+                AttributeName: escrowAddress
+                AttributeType: S
+              -
+                AttributeName: sellerProfilePubKey
+                AttributeType: S
+              -
+                AttributeName: buyerProfilePubKey
+                AttributeType: S
+              -
+                AttributeName: arbitratorProfilePubKey
+                AttributeType: S
+              -
+                AttributeName: updated
+                AttributeType: N
+            KeySchema:
+              -
+                AttributeName: escrowAddress
+                KeyType: HASH
+              -
+                AttributeName: updated
+                KeyType: RANGE
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+            GlobalSecondaryIndexes:
+              -
+                IndexName: sellerIndex
+                KeySchema:
+                  -
+                    AttributeName: sellerProfilePubKey
+                    KeyType: HASH
+                  -
+                    AttributeName: updated
+                    KeyType: RANGE
+                Projection:
+                  ProjectionType: ALL
+                ProvisionedThroughput:
+                  ReadCapacityUnits: "1"
+                  WriteCapacityUnits: "1"
+              -
+                IndexName: buyerIndex
+                KeySchema:
+                  -
+                    AttributeName: buyerProfilePubKey
+                    KeyType: HASH
+                  -
+                    AttributeName: updated
+                    KeyType: RANGE
+                Projection:
+                  ProjectionType: ALL
+                ProvisionedThroughput:
+                  ReadCapacityUnits: "1"
+                  WriteCapacityUnits: "1"
+              -
+                IndexName: arbitratorIndex
+                KeySchema:
+                  -
+                    AttributeName: arbitratorProfilePubKey
+                    KeyType: HASH
+                  -
+                    AttributeName: updated
+                    KeyType: RANGE
+                Projection:
+                  ProjectionType: ALL
+                ProvisionedThroughput:
+                  ReadCapacityUnits: "1"
+                  WriteCapacityUnits: "1"
 
 plugins:
   - serverless-domain-manager
