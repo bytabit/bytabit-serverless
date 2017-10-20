@@ -97,16 +97,10 @@ resources:
               -
                 AttributeName: pubKey
                 AttributeType: S
-              -
-                AttributeName: updated
-                AttributeType: N
             KeySchema:
               -
                 AttributeName: pubKey
                 KeyType: HASH
-              -
-                AttributeName: updated
-                KeyType: RANGE
             ProvisionedThroughput:
               ReadCapacityUnits: 1
               WriteCapacityUnits: 1
@@ -120,16 +114,10 @@ resources:
               -
                 AttributeName: sellerEscrowPubKey
                 AttributeType: S
-              -
-                AttributeName: updated
-                AttributeType: N
             KeySchema:
               -
                 AttributeName: sellerEscrowPubKey
                 KeyType: HASH
-              -
-                AttributeName: updated
-                KeyType: RANGE
             ProvisionedThroughput:
               ReadCapacityUnits: 1
               WriteCapacityUnits: 1
@@ -152,16 +140,10 @@ resources:
               -
                 AttributeName: arbitratorProfilePubKey
                 AttributeType: S
-              -
-                AttributeName: updated
-                AttributeType: N
             KeySchema:
               -
                 AttributeName: escrowAddress
                 KeyType: HASH
-              -
-                AttributeName: updated
-                KeyType: RANGE
             ProvisionedThroughput:
               ReadCapacityUnits: 1
               WriteCapacityUnits: 1
@@ -173,7 +155,7 @@ resources:
                     AttributeName: sellerProfilePubKey
                     KeyType: HASH
                   -
-                    AttributeName: updated
+                    AttributeName: escrowAddress
                     KeyType: RANGE
                 Projection:
                   ProjectionType: ALL
@@ -187,7 +169,7 @@ resources:
                     AttributeName: buyerProfilePubKey
                     KeyType: HASH
                   -
-                    AttributeName: updated
+                    AttributeName: escrowAddress
                     KeyType: RANGE
                 Projection:
                   ProjectionType: ALL
@@ -201,7 +183,7 @@ resources:
                     AttributeName: arbitratorProfilePubKey
                     KeyType: HASH
                   -
-                    AttributeName: updated
+                    AttributeName: escrowAddress
                     KeyType: RANGE
                 Projection:
                   ProjectionType: ALL
