@@ -11,12 +11,13 @@ class Trade {
 
         try {
             const data = JSON.parse(event.body);
+            const escrowAddress = event.pathParameters.escrowAddress;
 
             const params = {
                 TableName: process.env.TRADE_TABLE,
                 Item: {
                     // Sell Offer
-                    escrowAddress: data.escrowAddress,
+                    escrowAddress: escrowAddress,
                     sellerEscrowPubKey: data.sellerEscrowPubKey,
                     sellerProfilePubKey: data.sellerProfilePubKey,
                     arbitratorProfilePubKey: data.arbitratorProfilePubKey,
