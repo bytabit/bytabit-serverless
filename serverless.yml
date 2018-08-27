@@ -3,6 +3,7 @@ service: bytabit-serverless
 provider:
   name: aws
   runtime: nodejs6.10
+  stage: test
 
   environment:
       OFFER_TABLE: ${self:service}-${opt:stage, self:provider.stage}-offer
@@ -196,7 +197,7 @@ plugins:
 
 custom:
   customDomain:
-    domainName: test.bytabit.net
+    domainName: ${opt:stage, self:provider.stage}.bytabit.net
     basePath: ''
-    stage: ${self:provider.stage}
+    stage: ${opt:stage, self:provider.stage}
     createRoute53Record: true

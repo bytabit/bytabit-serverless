@@ -147,7 +147,7 @@ class Trade {
             callback(null, {
                 statusCode: error.statusCode || 501,
                 headers: {'Content-Type': 'text/plain'},
-                body: 'Couldn\'t fetch the trades by sellerProfilePubKey.',
+                body: 'Couldn\'t fetch the trades by profilePubKey.',
             });
         });
     }
