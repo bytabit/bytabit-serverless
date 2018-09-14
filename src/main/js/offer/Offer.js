@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 class Offer {
 
@@ -7,7 +7,7 @@ class Offer {
     }
 
     create(event, callback) {
-        const timestamp = new Date().getTime();
+        const timestamp = new Date().valueOf();
 
         try {
             const data = JSON.parse(event.body);
@@ -34,8 +34,8 @@ class Offer {
                     console.error(error);
                     callback(null, {
                         statusCode: error.statusCode || 501,
-                        headers: {'Content-Type': 'text/plain'},
-                        body: 'Couldn\'t create the sell offer.',
+                        headers: {"Content-Type": "text/plain"},
+                        body: "Couldn\"t create the sell offer.",
                     });
                     return;
                 }
@@ -48,11 +48,11 @@ class Offer {
                 callback(null, response);
             });
         } catch (err) {
-            console.error('Validation Failed: ' + err.name);
+            console.error("Validation Failed: " + err.name);
             callback(null, {
                 statusCode: 400,
-                headers: {'Content-Type': 'text/plain'},
-                body: 'Couldn\'t parse the sell offer.',
+                headers: {"Content-Type": "text/plain"},
+                body: "Couldn\"t parse the sell offer.",
             });
         }
     }
@@ -70,8 +70,8 @@ class Offer {
                 console.error(error);
                 callback(null, {
                     statusCode: error.statusCode || 501,
-                    headers: {'Content-Type': 'text/plain'},
-                    body: 'Couldn\'t fetch the sell offer.',
+                    headers: {"Content-Type": "text/plain"},
+                    body: "Couldn\"t fetch the sell offer.",
                 });
                 return;
             }
@@ -101,8 +101,8 @@ class Offer {
                 console.error(error);
                 callback(null, {
                     statusCode: error.statusCode || 501,
-                    headers: {'Content-Type': 'text/plain'},
-                    body: 'Couldn\'t delete the sell offer.',
+                    headers: {"Content-Type": "text/plain"},
+                    body: "Couldn\"t delete the sell offer.",
                 });
                 return;
             }

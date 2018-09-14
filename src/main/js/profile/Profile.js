@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 class Profile {
 
@@ -11,8 +11,8 @@ class Profile {
 
         try {
             const data = JSON.parse(event.body);
-            if (!data.hasOwnProperty('userName') || data['userName'].length < 1) {data['userName'] = null}
-            if (!data.hasOwnProperty('phoneNum') || data['phoneNum'].length < 1) {data['phoneNum'] = null}
+            if (!data.hasOwnProperty("userName") || data["userName"].length < 1) {data["userName"] = null}
+            if (!data.hasOwnProperty("phoneNum") || data["phoneNum"].length < 1) {data["phoneNum"] = null}
 
             const params = {
                 TableName: process.env.PROFILE_TABLE,
@@ -33,8 +33,8 @@ class Profile {
                     console.error(error);
                     callback(null, {
                         statusCode: error.statusCode || 501,
-                        headers: {'Content-Type': 'text/plain'},
-                        body: 'Couldn\'t create the profile.',
+                        headers: {"Content-Type": "text/plain"},
+                        body: "Couldn\"t create the profile.",
                     });
                     return;
                 }
@@ -47,11 +47,11 @@ class Profile {
                 callback(null, response);
             });
         } catch (err) {
-            console.error('Validation Failed: ' + err.name);
+            console.error("Validation Failed: " + err.name);
             callback(null, {
                 statusCode: 400,
-                headers: {'Content-Type': 'text/plain'},
-                body: 'Couldn\'t parse the profile.',
+                headers: {"Content-Type": "text/plain"},
+                body: "Couldn\"t parse the profile.",
             });
         }
     }
@@ -69,8 +69,8 @@ class Profile {
                 console.error(error);
                 callback(null, {
                     statusCode: error.statusCode || 501,
-                    headers: {'Content-Type': 'text/plain'},
-                    body: 'Couldn\'t fetch the profiles.',
+                    headers: {"Content-Type": "text/plain"},
+                    body: "Couldn\"t fetch the profiles.",
                 });
                 return;
             }
@@ -89,8 +89,8 @@ class Profile {
 
         try {
             const data = JSON.parse(event.body);
-            if (!data.hasOwnProperty('userName') || data['userName'].length < 1) {data['userName'] = null}
-            if (!data.hasOwnProperty('phoneNum') || data['phoneNum'].length < 1) {data['phoneNum'] = null}
+            if (!data.hasOwnProperty("userName") || data["userName"].length < 1) {data["userName"] = null}
+            if (!data.hasOwnProperty("phoneNum") || data["phoneNum"].length < 1) {data["phoneNum"] = null}
 
             const params = {
                 TableName: process.env.PROFILE_TABLE,
@@ -98,13 +98,13 @@ class Profile {
                     pubKey: event.pathParameters.pubKey,
                 },
                 ExpressionAttributeValues: {
-                    ':isArbitrator': data.isArbitrator,
-                    ':userName': data.userName,
-                    ':phoneNum': data.phoneNum,
-                    ':updated': timestamp
+                    ":isArbitrator": data.isArbitrator,
+                    ":userName": data.userName,
+                    ":phoneNum": data.phoneNum,
+                    ":updated": timestamp
                 },
-                UpdateExpression: 'SET isArbitrator = :isArbitrator, userName = :userName, phoneNum = :phoneNum, updated = :updated',
-                ReturnValues: 'ALL_NEW'
+                UpdateExpression: "SET isArbitrator = :isArbitrator, userName = :userName, phoneNum = :phoneNum, updated = :updated",
+                ReturnValues: "ALL_NEW"
             };
 
             // write the offer to the database
@@ -114,8 +114,8 @@ class Profile {
                     console.error(error);
                     callback(null, {
                         statusCode: error.statusCode || 501,
-                        headers: {'Content-Type': 'text/plain'},
-                        body: 'Couldn\'t update the profile.',
+                        headers: {"Content-Type": "text/plain"},
+                        body: "Couldn\"t update the profile.",
                     });
                     return;
                 }
@@ -128,11 +128,11 @@ class Profile {
                 callback(null, response);
             });
         } catch (err) {
-            console.error('Validation Failed: ' + err.name);
+            console.error("Validation Failed: " + err.name);
             callback(null, {
                 statusCode: 400,
-                headers: {'Content-Type': 'text/plain'},
-                body: 'Couldn\'t parse the profile.',
+                headers: {"Content-Type": "text/plain"},
+                body: "Couldn\"t parse the profile.",
             });
         }
     }
@@ -153,8 +153,8 @@ class Profile {
                 console.error(error);
                 callback(null, {
                     statusCode: error.statusCode || 501,
-                    headers: {'Content-Type': 'text/plain'},
-                    body: 'Couldn\'t delete the profile.',
+                    headers: {"Content-Type": "text/plain"},
+                    body: "Couldn\"t delete the profile.",
                 });
                 return;
             }

@@ -133,6 +133,9 @@ resources:
                 AttributeName: escrowAddress
                 AttributeType: S
               -
+                AttributeName: version
+                AttributeType: N
+              -
                 AttributeName: sellerProfilePubKey
                 AttributeType: S
               -
@@ -145,6 +148,9 @@ resources:
               -
                 AttributeName: escrowAddress
                 KeyType: HASH
+              -
+                AttributeName: version
+                KeyType: RANGE
             ProvisionedThroughput:
               ReadCapacityUnits: 1
               WriteCapacityUnits: 1

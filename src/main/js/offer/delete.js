@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
-const AWS = require('aws-sdk');
+const AWS = require("aws-sdk");
 const db = new AWS.DynamoDB.DocumentClient();
-const Offer = require('./Offer');
+const Offer = require("./Offer");
 
 let offer = new Offer(db);
 
