@@ -20,7 +20,7 @@ class Trade {
                     escrowAddress: escrowAddress,
                     version: timestamp,
                     sellerProfilePubKey: tradeServiceResource.sellerProfilePubKey,
-                    buyerProfilePubKey: tradeServiceResource.sellerProfilePubKey,
+                    buyerProfilePubKey: tradeServiceResource.buyerProfilePubKey,
                     arbitratorProfilePubKey: tradeServiceResource.arbitratorProfilePubKey,
 
                     // TODO this will be block of encrypted trade data
