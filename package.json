@@ -7,8 +7,12 @@
   "scripts": {
     "test": "jest"
   },
+  "dependencies": {
+    "bitcoin-core": "^2.0.0"
+  },
   "devDependencies": {
-    "jest": "^21.1.0",
-    "serverless-domain-manager": "^1.1.12"
+    "jest": "^21.2.1",
+    "serverless-domain-manager": "^1.1.25",
+    "serverless-offline": "^3.28.0"
   }
 }

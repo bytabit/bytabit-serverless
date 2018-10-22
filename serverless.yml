@@ -27,6 +27,10 @@ provider:
           - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.TRADE_TABLE}/index/buyerIndex"
           - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.TRADE_TABLE}/index/arbitratorIndex"
 
+#package:
+#  include:
+#    - node_modules/**
+
 functions:
   profiles-create:
       handler: src/main/js/profile/create.create
@@ -83,6 +87,13 @@ functions:
       events:
         - http:
             path: trades
+            method: get
+            cors: true
+  bitcoin-getrawtransaction:
+      handler: src/main/js/bitcoin/getrawtransaction.getrawtransaction
+      events:
+        - http:
+            path: bitcoin/tx/{txhash}
             method: get
             cors: true
 
@@ -200,6 +211,7 @@ resources:
 
 plugins:
   - serverless-domain-manager
+  - serverless-offline
 
 custom:
   customDomain:
