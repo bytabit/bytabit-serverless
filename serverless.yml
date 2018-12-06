@@ -30,7 +30,7 @@ functions:
       handler: src/main/js/offer/create.create
       events:
         - http:
-            path: offers/{sellerEscrowPubKey}
+            path: offers/{traderEscrowPubKey}
             method: put
             cors: true
   offers-list:
@@ -44,7 +44,7 @@ functions:
       handler: src/main/js/offer/delete.delete
       events:
         - http:
-            path: offers/{sellerEscrowPubKey}
+            path: offers/{traderEscrowPubKey}
             method: delete
             cors: true
   trades-create:
@@ -72,11 +72,11 @@ resources:
             TableName: ${self:provider.environment.OFFER_TABLE}
             AttributeDefinitions:
               -
-                AttributeName: sellerEscrowPubKey
+                AttributeName: traderEscrowPubKey
                 AttributeType: S
             KeySchema:
               -
-                AttributeName: sellerEscrowPubKey
+                AttributeName: traderEscrowPubKey
                 KeyType: HASH
             ProvisionedThroughput:
               ReadCapacityUnits: 1

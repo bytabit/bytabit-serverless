@@ -14,8 +14,9 @@ class Offer {
             const params = {
                 TableName: process.env.OFFER_TABLE,
                 Item: {
-                    sellerEscrowPubKey: data.sellerEscrowPubKey,
-                    sellerProfilePubKey: data.sellerProfilePubKey,
+                    offerType: data.offerType,
+                    traderEscrowPubKey: data.traderEscrowPubKey,
+                    traderProfilePubKey: data.traderProfilePubKey,
                     arbitratorProfilePubKey: data.arbitratorProfilePubKey,
                     currencyCode: data.currencyCode,
                     paymentMethod: data.paymentMethod,
