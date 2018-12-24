@@ -14,10 +14,9 @@ class Offer {
             const params = {
                 TableName: process.env.OFFER_TABLE,
                 Item: {
+                    id: data.id,
                     offerType: data.offerType,
-                    traderEscrowPubKey: data.traderEscrowPubKey,
-                    traderProfilePubKey: data.traderProfilePubKey,
-                    arbitratorProfilePubKey: data.arbitratorProfilePubKey,
+                    makerProfilePubKey: data.makerProfilePubKey,
                     currencyCode: data.currencyCode,
                     paymentMethod: data.paymentMethod,
                     minAmount: data.minAmount,
@@ -91,7 +90,7 @@ class Offer {
         const params = {
             TableName: process.env.OFFER_TABLE,
             Key: {
-                sellerEscrowPubKey: event.pathParameters.sellerEscrowPubKey
+                id: event.pathParameters.id
             }
         };
 
@@ -108,10 +107,15 @@ class Offer {
                 return;
             }
 
+            const offerId = {
+                // deleted offer id
+                id: event.pathParameters.id
+            };
+
             // create a response
             const response = {
                 statusCode: 200,
-                body: JSON.stringify({}),
+                body: JSON.stringify(offerId)
             };
             callback(null, response);
         });

@@ -11,13 +11,13 @@ class Trade {
 
         try {
             const tradeServiceResource = JSON.parse(event.body);
-            const escrowAddress = event.pathParameters.escrowAddress;
+            const id = event.pathParameters.id;
 
             const params = {
                 TableName: process.env.TRADE_TABLE,
                 Item: {
                     // search keys
-                    escrowAddress: escrowAddress,
+                    id: id,
                     version: timestamp,
                     sellerProfilePubKey: tradeServiceResource.sellerProfilePubKey,
                     buyerProfilePubKey: tradeServiceResource.buyerProfilePubKey,
@@ -44,7 +44,7 @@ class Trade {
                 // put a response
                 const response = {
                     statusCode: 200,
-                    body: JSON.stringify(params.Item),
+                    body: JSON.stringify(params.Item)
                 };
                 callback(null, response);
             });
@@ -63,7 +63,7 @@ class Trade {
         const profilePubKey = event["queryStringParameters"]["profilePubKey"];
 
         const versionParam = event["queryStringParameters"]["version"];
-        const version = (versionParam === undefined) ? 0 : versionParam;
+        const version = (versionParam === undefined) ? 0 : parseInt(versionParam);
 
         function params(indexName, keyName) {
             return {
