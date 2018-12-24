@@ -1,3 +1,8 @@
+/*
+ * Copyright 2018 Bytabit AB
+ *
+ */
+
 "use strict";
 
 const AWS = require("aws-sdk");

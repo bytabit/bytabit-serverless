@@ -1,3 +1,8 @@
+/*
+ * Copyright 2018 Bytabit AB
+ *
+ */
+
 const Offer = require("../../../main/js/offer/offer");
 
 test("parse event.body", () => {
