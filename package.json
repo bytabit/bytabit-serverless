@@ -9,6 +9,6 @@
   },
   "devDependencies": {
     "jest": "^21.1.0",
-    "serverless-domain-manager": "^1.1.12"
+    "serverless-domain-manager": "^1.1.25"
   }
 }

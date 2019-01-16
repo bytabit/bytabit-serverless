@@ -26,41 +26,55 @@ provider:
           - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.TRADE_TABLE}/index/arbitratorIndex"
 
 functions:
-  offers-create:
-      handler: src/main/js/offer/create.create
+  offers-put:
+      handler: src/main/js/offer_aws.put
       events:
         - http:
             path: offers/{id}
             method: put
             cors: true
-  offers-list:
-      handler: src/main/js/offer/list.list
+  offers-getall:
+      handler: src/main/js/offer_aws.getall
       events:
         - http:
             path: offers
             method: get
             cors: true
+  offers-getbyid:
+    handler: src/main/js/offer_aws.getbyid
+    events:
+      - http:
+          path: offers/{id}
+          method: get
+          cors: true
   offers-delete:
-      handler: src/main/js/offer/delete.delete
+      handler: src/main/js/offer_aws.delete
       events:
         - http:
             path: offers/{id}
             method: delete
             cors: true
-  trades-create:
-      handler: src/main/js/trade/create.create
+  trades-put:
+      handler: src/main/js/trade_aws.put
       events:
         - http:
             path: trades/{id}
             method: put
             cors: true
-  trades-list:
-      handler: src/main/js/trade/list.list
+  trades-getbyid:
+      handler: src/main/js/trade_aws.getbyid
       events:
         - http:
-            path: trades
+            path: trades/{id}
             method: get
             cors: true
+  trades-getbyoffer:
+    handler: src/main/js/trade_aws.getbyofferid
+    events:
+      - http:
+          path: offers/{id}/trades
+          method: get
+          cors: true
 
 resources:
   Resources:
@@ -95,13 +109,7 @@ resources:
                 AttributeName: version
                 AttributeType: N
               -
-                AttributeName: sellerProfilePubKey
-                AttributeType: S
-              -
-                AttributeName: buyerProfilePubKey
-                AttributeType: S
-              -
-                AttributeName: arbitratorProfilePubKey
+                AttributeName: offerId
                 AttributeType: S
             KeySchema:
               -
@@ -115,38 +123,10 @@ resources:
               WriteCapacityUnits: 1
             GlobalSecondaryIndexes:
               -
-                IndexName: sellerIndex
+                IndexName: offerIndex
                 KeySchema:
                   -
-                    AttributeName: sellerProfilePubKey
-                    KeyType: HASH
-                  -
-                    AttributeName: id
-                    KeyType: RANGE
-                Projection:
-                  ProjectionType: ALL
-                ProvisionedThroughput:
-                  ReadCapacityUnits: "1"
-                  WriteCapacityUnits: "1"
-              -
-                IndexName: buyerIndex
-                KeySchema:
-                  -
-                    AttributeName: buyerProfilePubKey
-                    KeyType: HASH
-                  -
-                    AttributeName: id
-                    KeyType: RANGE
-                Projection:
-                  ProjectionType: ALL
-                ProvisionedThroughput:
-                  ReadCapacityUnits: "1"
-                  WriteCapacityUnits: "1"
-              -
-                IndexName: arbitratorIndex
-                KeySchema:
-                  -
-                    AttributeName: arbitratorProfilePubKey
+                    AttributeName: offerId
                     KeyType: HASH
                   -
                     AttributeName: id
