@@ -76,7 +76,7 @@ class Trade {
         };
 
         // retrieve the trades from the database
-        this.db.scan(params, (error, result) => {
+        this.db.query(params, (error, result) => {
             // handle potential errors
             if (error) {
                 console.error(error);

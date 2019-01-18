@@ -27,7 +27,6 @@ class Offer {
                     minAmount: data.minAmount,
                     maxAmount: data.maxAmount,
                     price: data.price,
-                    created: timestamp,
                     updated: timestamp
                 }
             };
@@ -40,7 +39,7 @@ class Offer {
                     callback(null, {
                         statusCode: error.statusCode || 501,
                         headers: {"Content-Type": "text/plain"},
-                        body: "Couldn\"t put the offer.",
+                        body: "Couldn't put the offer.",
                     });
                     return;
                 }
@@ -57,7 +56,7 @@ class Offer {
             callback(null, {
                 statusCode: 400,
                 headers: {"Content-Type": "text/plain"},
-                body: "Couldn\"t parse the offer.",
+                body: "Couldn't parse the offer.",
             });
         }
     }
@@ -76,7 +75,7 @@ class Offer {
                 callback(null, {
                     statusCode: error.statusCode || 501,
                     headers: {"Content-Type": "text/plain"},
-                    body: "Couldn\"t fetch the offers.",
+                    body: "Couldn't fetch the offers.",
                 });
                 return;
             }
@@ -99,15 +98,15 @@ class Offer {
             }
         };
 
-        // retrieve the offers from the database
-        this.db.getItem(params, (error, result) => {
+        // retrieve the offer from the database
+        this.db.get(params, (error, result) => {
             // handle potential errors
             if (error) {
                 console.error(error);
                 callback(null, {
                     statusCode: error.statusCode || 501,
                     headers: {"Content-Type": "text/plain"},
-                    body: "Couldn\"t fetch the offer.",
+                    body: "Couldn't fetch the offer.",
                 });
                 return;
             }
@@ -138,7 +137,7 @@ class Offer {
                 callback(null, {
                     statusCode: error.statusCode || 501,
                     headers: {"Content-Type": "text/plain"},
-                    body: "Couldn\"t delete the sell offer.",
+                    body: "Couldn't delete the offer.",
                 });
                 return;
             }

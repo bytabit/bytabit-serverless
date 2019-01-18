@@ -21,9 +21,7 @@ provider:
         Resource:
           - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.OFFER_TABLE}"
           - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.TRADE_TABLE}"
-          - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.TRADE_TABLE}/index/sellerIndex"
-          - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.TRADE_TABLE}/index/buyerIndex"
-          - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.TRADE_TABLE}/index/arbitratorIndex"
+          - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.TRADE_TABLE}/index/offerIndex"
 
 functions:
   offers-put:
@@ -118,9 +116,6 @@ resources:
               -
                 AttributeName: version
                 KeyType: RANGE
-            ProvisionedThroughput:
-              ReadCapacityUnits: 1
-              WriteCapacityUnits: 1
             GlobalSecondaryIndexes:
               -
                 IndexName: offerIndex
@@ -136,6 +131,9 @@ resources:
                 ProvisionedThroughput:
                   ReadCapacityUnits: "1"
                   WriteCapacityUnits: "1"
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
 
 plugins:
   - serverless-domain-manager
