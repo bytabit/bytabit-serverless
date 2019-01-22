@@ -3,7 +3,7 @@ service: bytabit-serverless
 provider:
   name: aws
   runtime: nodejs8.10
-  stage: test
+  stage: regtest
 
   environment:
       OFFER_TABLE: ${self:service}-${opt:stage, self:provider.stage}-offer
