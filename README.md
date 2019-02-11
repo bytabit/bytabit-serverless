@@ -10,6 +10,11 @@ layout: Doc
 npm install
 ```
 
+```bash
+gradle wrapper # to build the gradle wrapper jar
+./gradlew build # to build the application jar 
+```
+
 ## Deploy
 
 In order to deploy the endpoint simply run

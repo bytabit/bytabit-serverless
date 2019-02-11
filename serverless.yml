@@ -2,8 +2,11 @@ service: bytabit-serverless
 
 provider:
   name: aws
-  runtime: nodejs8.10
+  runtime: java8
   stage: regtest
+
+  package:
+    artifact: build/distributions/bytabit-serverless.zip
 
   environment:
       OFFER_TABLE: ${self:service}-${opt:stage, self:provider.stage}-offer
@@ -27,130 +30,130 @@ provider:
           - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.BADGE_TABLE}/index/badgeIndex"
 
 functions:
-  offers-put:
-      handler: src/main/js/offer_aws.put
-      events:
-        - http:
-            path: offers/{id}
-            method: put
-            cors: true
-  offers-getall:
-      handler: src/main/js/offer_aws.getall
-      events:
-        - http:
-            path: offers
-            method: get
-            cors: true
-  offers-getbyid:
-    handler: src/main/js/offer_aws.getbyid
-    events:
-      - http:
-          path: offers/{id}
-          method: get
-          cors: true
-  offers-delete:
-      handler: src/main/js/offer_aws.delete
-      events:
-        - http:
-            path: offers/{id}
-            method: delete
-            cors: true
-  trades-put:
-      handler: src/main/js/trade_aws.put
-      events:
-        - http:
-            path: trades/{id}
-            method: put
-            cors: true
-  trades-getbyid:
-      handler: src/main/js/trade_aws.getbyid
-      events:
-        - http:
-            path: trades/{id}
-            method: get
-            cors: true
-  trades-getbyoffer:
-    handler: src/main/js/trade_aws.getbyofferid
-    events:
-      - http:
-          path: offers/{id}/trades
-          method: get
-          cors: true
+#  offers-put:
+#      handler: src/main/js/offer_aws.put
+#      events:
+#        - http:
+#            path: offers/{id}
+#            method: put
+#            cors: true
+#  offers-getall:
+#      handler: src/main/js/offer_aws.getall
+#      events:
+#        - http:
+#            path: offers
+#            method: get
+#            cors: true
+#  offers-getbyid:
+#    handler: src/main/js/offer_aws.getbyid
+#    events:
+#      - http:
+#          path: offers/{id}
+#          method: get
+#          cors: true
+#  offers-delete:
+#      handler: src/main/js/offer_aws.delete
+#      events:
+#        - http:
+#            path: offers/{id}
+#            method: delete
+#            cors: true
+#  trades-put:
+#      handler: src/main/js/trade_aws.put
+#      events:
+#        - http:
+#            path: trades/{id}
+#            method: put
+#            cors: true
+#  trades-getbyid:
+#      handler: src/main/js/trade_aws.getbyid
+#      events:
+#        - http:
+#            path: trades/{id}
+#            method: get
+#            cors: true
+#  trades-getbyoffer:
+#    handler: src/main/js/trade_aws.getbyofferid
+#    events:
+#      - http:
+#          path: offers/{id}/trades
+#          method: get
+#          cors: true
   badges-put:
-    handler: src/main/js/badge_aws.put
+    handler: com.bytabit.serverless.badge.PutBadgeHandler
     events:
       - http:
-          path: badges/{id}
+          path: badges/{profilePubKey}/{id}
           method: put
           cors: true
   badges-getbypubkey:
-    handler: src/main/js/badge_aws.getbypubkey
+    handler: com.bytabit.serverless.badge.GetBadgeHandler
     events:
       - http:
-          path: badges
+          path: badges/{profilePubKey}
           method: get
           cors: true
 
 resources:
   Resources:
-
-    BytabitOfferTable:
-          Type: 'AWS::DynamoDB::Table'
-          DeletionPolicy: Delete
-          Properties:
-            TableName: ${self:provider.environment.OFFER_TABLE}
-            AttributeDefinitions:
-              -
-                AttributeName: id
-                AttributeType: S
-            KeySchema:
-              -
-                AttributeName: id
-                KeyType: HASH
-            ProvisionedThroughput:
-              ReadCapacityUnits: 1
-              WriteCapacityUnits: 1
-
-    BytabitTradeTable:
-          Type: 'AWS::DynamoDB::Table'
-          DeletionPolicy: Delete
-          Properties:
-            TableName: ${self:provider.environment.TRADE_TABLE}
-            AttributeDefinitions:
-              -
-                AttributeName: id
-                AttributeType: S
-              -
-                AttributeName: version
-                AttributeType: N
-              -
-                AttributeName: offerId
-                AttributeType: S
-            KeySchema:
-              -
-                AttributeName: id
-                KeyType: HASH
-              -
-                AttributeName: version
-                KeyType: RANGE
-            GlobalSecondaryIndexes:
-              -
-                IndexName: offerIndex
-                KeySchema:
-                  -
-                    AttributeName: offerId
-                    KeyType: HASH
-                  -
-                    AttributeName: id
-                    KeyType: RANGE
-                Projection:
-                  ProjectionType: ALL
-                ProvisionedThroughput:
-                  ReadCapacityUnits: "1"
-                  WriteCapacityUnits: "1"
-            ProvisionedThroughput:
-              ReadCapacityUnits: 1
-              WriteCapacityUnits: 1
+#
+#    BytabitOfferTable:
+#          Type: 'AWS::DynamoDB::Table'
+#          DeletionPolicy: Delete
+#          Properties:
+#            TableName: ${self:provider.environment.OFFER_TABLE}
+#            AttributeDefinitions:
+#              -
+#                AttributeName: id
+#                AttributeType: S
+#            KeySchema:
+#              -
+#                AttributeName: id
+#                KeyType: HASH
+#            ProvisionedThroughput:
+#              ReadCapacityUnits: 1
+#              WriteCapacityUnits: 1
+#
+#    BytabitTradeTable:
+#          Type: 'AWS::DynamoDB::Table'
+#          DeletionPolicy: Delete
+#          Properties:
+#            TableName: ${self:provider.environment.TRADE_TABLE}
+#            AttributeDefinitions:
+#              -
+#                AttributeName: id
+#                AttributeType: S
+#              -
+#                AttributeName: version
+#                AttributeType: N
+#              -
+#                AttributeName: offerId
+#                AttributeType: S
+#            KeySchema:
+#              -
+#                AttributeName: id
+#                KeyType: HASH
+#              -
+#                AttributeName: version
+#                KeyType: RANGE
+#            GlobalSecondaryIndexes:
+#              -
+#                IndexName: offerIndex
+#                KeySchema:
+#                  -
+#                    AttributeName: offerId
+#                    KeyType: HASH
+#                  -
+#                    AttributeName: id
+#                    KeyType: RANGE
+#                Projection:
+#                  ProjectionType: ALL
+#                ProvisionedThroughput:
+#                  ReadCapacityUnits: "1"
+#                  WriteCapacityUnits: "1"
+#            ProvisionedThroughput:
+#              ReadCapacityUnits: 1
+#              WriteCapacityUnits: 1
 
     BytabitBadgeTable:
       Type: 'AWS::DynamoDB::Table'
@@ -158,25 +161,27 @@ resources:
       Properties:
         TableName: ${self:provider.environment.BADGE_TABLE}
         AttributeDefinitions:
-          - AttributeName: id
-            AttributeType: S
           - AttributeName: profilePubKey
             AttributeType: S
-        KeySchema:
           - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: profilePubKey
             KeyType: HASH
-        GlobalSecondaryIndexes:
-          - IndexName: badgeIndex
-            KeySchema:
-              - AttributeName: profilePubKey
-                KeyType: HASH
-              - AttributeName: id
-                KeyType: RANGE
-            Projection:
-              ProjectionType: ALL
-            ProvisionedThroughput:
-              ReadCapacityUnits: "1"
-              WriteCapacityUnits: "1"
+          - AttributeName: id
+            KeyType: RANGE
+#        GlobalSecondaryIndexes:
+#          - IndexName: badgeIndex
+#            KeySchema:
+#              - AttributeName: profilePubKey
+#                KeyType: HASH
+#              - AttributeName: profilePubKey
+#                KeyType: RANGE
+#            Projection:
+#              ProjectionType: ALL
+#            ProvisionedThroughput:
+#              ReadCapacityUnits: "1"
+#              WriteCapacityUnits: "1"
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1

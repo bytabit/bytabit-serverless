@@ -1,0 +1,19 @@
+service: bytabit-serverless
+
+frameworkVersion: ">=1.2.0 <2.0.0"
+
+provider:
+  name: aws
+  runtime: java8
+  stage: regtest-java
+
+package:
+  artifact: build/distributions/bytabit-serverless.zip
+
+functions:
+  currentTime:
+    handler: com.bytabit.serverless.Handler
+    events:
+      - http:
+          path: ping
+          method: get

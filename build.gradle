@@ -1,0 +1,79 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            url "http://dl.bintray.com/palantir/releases"
+        }
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath 'com.palantir:gradle-gitsemver:0.6.0'
+        classpath 'io.franzbecker:gradle-lombok:1.14'
+    }
+}
+
+plugins {
+    id 'io.franzbecker.gradle-lombok' version '1.14'
+    id 'java'
+}
+
+apply plugin: 'gitsemver'
+
+lombok {
+    version = '1.18.4'
+    sha256 = ""
+}
+
+repositories {
+    mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+def semver = semverVersion().toString()
+
+processResources {
+    filesMatching("*.properties") {
+        filter ReplaceTokens, tokens: [VERSION: semver]
+    }
+
+    outputs.upToDateWhen { false }
+}
+
+dependencies {
+    compile(
+            'com.amazonaws:aws-lambda-java-core:1.1.0',
+            'com.amazonaws:aws-lambda-java-log4j:1.0.0',
+            'com.amazonaws:aws-java-sdk-dynamodb:1.11.119',
+            'com.fasterxml.jackson.core:jackson-core:2.8.5',
+            'com.fasterxml.jackson.core:jackson-databind:2.8.11.1',
+            'com.fasterxml.jackson.core:jackson-annotations:2.8.5',
+            'io.reactivex.rxjava2:rxjavafx:2.2.0',
+            'org.slf4j:jcl-over-slf4j:1.7.25',
+            'org.slf4j:slf4j-api:1.7.21',
+            'com.squareup.retrofit2:retrofit:2.4.0',
+            'com.squareup.retrofit2:converter-gson:2.4.0',
+            'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+    )
+}
+
+// http://docs.aws.amazon.com/lambda/latest/dg/create-deployment-pkg-zip-java.html
+task buildZip(type: Zip) {
+    baseName = "bytabit-serverless"
+    from compileJava
+    from processResources
+    into('lib') {
+        from configurations.runtime
+    }
+}
+
+build.dependsOn buildZip
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.2.1'
+}

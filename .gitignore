@@ -6,3 +6,6 @@ jspm_packages
 .serverless
 
 /.idea/
+/.gradle/
+/build
+/gradle
