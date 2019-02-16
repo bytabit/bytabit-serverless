@@ -1,12 +1,12 @@
 service: bytabit-serverless
 
+frameworkVersion: ">=1.35.0 <2.0.0"
+
 provider:
   name: aws
   runtime: java8
   stage: regtest
-
-  package:
-    artifact: build/distributions/bytabit-serverless.zip
+#  websocketApiRouteSelectionExpression: $request.body.action
 
   environment:
       OFFER_TABLE: ${self:service}-${opt:stage, self:provider.stage}-offer
@@ -29,7 +29,6 @@ provider:
           - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.BADGE_TABLE}"
           - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.BADGE_TABLE}/index/badgeIndex"
 
-functions:
 #  offers-put:
 #      handler: src/main/js/offer_aws.put
 #      events:
@@ -79,6 +78,11 @@ functions:
 #          path: offers/{id}/trades
 #          method: get
 #          cors: true
+
+package:
+  artifact: build/distributions/bytabit-serverless.zip
+
+functions:
   badges-put:
     handler: com.bytabit.serverless.badge.PutBadgeHandler
     events:
@@ -93,9 +97,24 @@ functions:
           path: badges/{profilePubKey}
           method: get
           cors: true
+#  connectionManagement:
+#    handler: com.bytabit.serverless.ws.Handler
+#    events:
+#      - websocket:
+#          routeKey: $connect
+#      - websocket:
+#          routeKey: $disconnect
+#  defaultMessage:
+#    handler: com.bytabit.serverless.ws.Handler
+#    events:
+#      - websocket:
+#          routeKey: $default
+#  chatMessage:
+#    handler: com.bytabit.serverless.ws.Handler
+#    events:
+#      - websocket:
+#          routeKey: message
 
-resources:
-  Resources:
 #
 #    BytabitOfferTable:
 #          Type: 'AWS::DynamoDB::Table'
@@ -154,6 +173,8 @@ resources:
 #            ProvisionedThroughput:
 #              ReadCapacityUnits: 1
 #              WriteCapacityUnits: 1
+resources:
+  Resources:
 
     BytabitBadgeTable:
       Type: 'AWS::DynamoDB::Table'
@@ -187,6 +208,7 @@ resources:
           WriteCapacityUnits: 1
 
 plugins:
+#  - serverless-websockets-plugin
   - serverless-domain-manager
 
 custom:
