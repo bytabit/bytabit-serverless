@@ -1,0 +1,9 @@
+{
+  "profilePubKey": "abc123",
+  "id": "test",
+  "badgeType": "BETA_TESTER",
+  "currencyCode": "SEK",
+  "paymentMethod": "SWISH",
+  "detailsHash": "hashhash",
+  "updated": "2019-03-06T07:00:39.428Z"
+}

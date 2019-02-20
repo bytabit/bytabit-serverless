@@ -21,14 +21,14 @@ In order to deploy the endpoint simply run
 
 REGTEST
 ```bash
-serverless deploy --stage regtest
-serverless remove --stage regtest
+serverless deploy
+serverless remove
 ```
 
 TEST
 ```bash
-serverless deploy 
-serverless remove
+serverless deploy --stage test
+serverless remove --stage test
 ```
 
 

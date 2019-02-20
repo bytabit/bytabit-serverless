@@ -1,17 +1,17 @@
 package com.bytabit.serverless.badge.model;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.bytabit.serverless.profile.model.CurrencyCode;
 import com.bytabit.serverless.profile.model.PaymentMethod;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NonNull;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
+import java.util.Date;
 
-@DynamoDBTable(tableName = "PLACEHOLDER_BADGE_TABLE")
 @Data
+@Builder
 public class Badge {
 
     public enum BadgeType {
@@ -20,10 +20,8 @@ public class Badge {
         DETAILS_VERIFIED
     }
 
-    @DynamoDBHashKey
     private String profilePubKey;
 
-    @DynamoDBRangeKey
     private String id;
 
     private BadgeType badgeType;
@@ -38,9 +36,13 @@ public class Badge {
 
     private String detailsHash;
 
+    private Date updated;
+
+    // payment information
+    // TODO move this to another table and/or remove after payment is confirmed
+
+    @NonNull
     private BigDecimal btcAmount;
 
     private String transactionId;
-
-    private ZonedDateTime updated;
 }

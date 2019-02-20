@@ -1,12 +1,13 @@
 package com.bytabit.serverless.common;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.apache.log4j.Logger;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Map;
 
 public class ApiGatewayResponse {
@@ -48,7 +49,10 @@ public class ApiGatewayResponse {
 
         private static final Logger LOG = Logger.getLogger(ApiGatewayResponse.Builder.class);
 
-        private static final ObjectMapper objectMapper = new ObjectMapper();
+        private static final Gson gson = new GsonBuilder()
+                //.setPrettyPrinting()
+                .registerTypeAdapter(Date.class, new DateConverter())
+                .create();
 
         private int statusCode = 200;
         private Map<String, String> headers = Collections.emptyMap();
@@ -114,8 +118,8 @@ public class ApiGatewayResponse {
                 body = rawBody;
             } else if (objectBody != null) {
                 try {
-                    body = objectMapper.writeValueAsString(objectBody);
-                } catch (JsonProcessingException e) {
+                    body = gson.toJson(objectBody);
+                } catch (Exception e) {
                     LOG.error("failed to serialize object", e);
                     throw new RuntimeException(e);
                 }

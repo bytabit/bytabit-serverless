@@ -1,0 +1,494 @@
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{  "btcAmount":"1.0", "transactionId":"IDIDIDID", "badge": { "profilePubKey": "abc123", "id": "test", "badgeType":"BETA_TESTER", "currencyCode":"SEK", "paymentMethod":"SWISH", "detailsHash":"hashhash" } }
+
+<> 2019-03-05T110040.200.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{  "btcAmount":"1.0", "transactionId":"IDIDIDID", "badge": { "profilePubKey": "abc123", "id": "test", "badgeType":"BETA_TESTER", "currencyCode":"SEK", "paymentMethod":"SWISH", "detailsHash":"hashhash" } }
+
+<> 2019-03-05T102118.200.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{  "btcAmount":"1.0", "transactionId":"IDIDIDID", "badge": { "profilePubKey": "abc123", "id": "test", "badgeType":"BETA_TESTER", "currencyCode":"SEK", "paymentMethod":"SWISH", "detailsHash":"hashhash" } }
+
+<> 2019-03-05T102116.200.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{  "btcAmount":"1.0", "transactionId":"IDIDIDID", "badge": { "profilePubKey": "abc123", "id": "test", "badgeType":"BETA_TESTER", "currencyCode":"SEK", "paymentMethod":"SWISH", "detailsHash":"hashhash" } }
+
+<> 2019-03-05T102115.200.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{  "btcAmount":"1.0", "transactionId":"IDIDIDID", "badge": { "profilePubKey": "abc123", "id": "test", "badgeType":"BETA_TESTER", "currencyCode":"SEK", "paymentMethod":"SWISH", "detailsHash":"hashhash" } }
+
+<> 2019-03-05T101133.200.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{  "btcAmount":"1.0", "transactionId":"IDIDIDID", "badge": { "profilePubKey": "abc123", "id": "test", "badgeType":"BETA_TESTER", "currencyCode":"SEK", "paymentMethod":"SWISH", "detailsHash":"hashhash" } }
+
+<> 2019-03-05T100015.200.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{  "btcAmount":"1.0", "transactionId":"IDIDIDID", "badge": { "profilePubKey": "abc123", "id": "test", "badgeType":"BETA_TESTER", "currencyCode":"SEK", "paymentMethod":"SWISH", "detailsHash":"hashhash" } }
+
+<> 2019-03-05T095328.500.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{  "btcAmount":"1.0", "transactionId":"IDIDIDID", "badge": { "profilePubKey": "abc123", "id": "test", "badgeType":"BETA_TESTER", "currencyCode":"SEK", "paymentMethod":"SWISH", "detailsHash":"hashhash" } }
+
+<> 2019-03-05T091649.500.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{  "btcAmount":"1.0", "transactionId":"IDIDIDID", "badge": { "profilePubKey": "abc123", "id": "test", "badgeType":"BETA_TESTER", "currencyCode":"SEK", "paymentMethod":"SWISH", "detailsHash":"hashhash" } }
+
+<> 2019-02-21T110144.200.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{  "btcAmount":"1.0", "transactionId":"IDIDIDID", "badge": { "profilePubKey": "abc123", "id": "test", "badgeType":"BETA_TESTER", "currencyCode":"SEK", "paymentMethod":"SWISH", "detailsHash":"hashhash" } }
+
+<> 2019-02-21T105637.200.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{  "btcAmount":"1.0", "transactionId":"IDIDIDID", "badge": { "profilePubKey": "abc123", "id": "test", "badgeType":"BETA_TESTER", "currencyCode":"SEK", "paymentMethod":"SWISH", "detailsHash":"hashhash" } }
+
+<> 2019-02-21T104648.200.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{  "btcAmount":"1.0", "transactionId":"IDIDIDID", "badge": { "profilePubKey": "abc123", "id": "test", "badgeType":"BETA_TESTER", "currencyCode":"SEK", "paymentMethod":"SWISH", "detailsHash":"hashhash" } }
+
+<> 2019-02-21T103624.200.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{  "btcAmount":"1.0", "transactionId":"IDIDIDID", "badge": { "profilePubKey": "abc123", "id": "test", "badgeType":"BETA_TESTER", "currencyCode":"SEK", "paymentMethod":"SWISH", "detailsHash":"hashhash" } }
+
+<> 2019-02-21T103202.200.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{  "btcAmount":"1.0", "transactionId":"IDIDIDID", "badge": { "profilePubKey": "abc123", "id": "test", "badgeType":"BETA_TESTER", "currencyCode":"SEK", "paymentMethod":"SWISH", "detailsHash":"hashhash" } }
+
+<> 2019-02-21T102807.200.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{  "btcAmount":"1.0", "transactionId":"IDIDIDID", "badge": { "profilePubKey": "abc123", "id": "test", "badgeType":"BETA_TESTER", "currencyCode":"SEK", "paymentMethod":"SWISH", "detailsHash":"hashhash" } }
+
+<> 2019-02-21T102148.200.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{  "btcAmount":"1.0", "transactionId":"IDIDIDID", "badge": { "profilePubKey": "abc123", "id": "test", "badgeType":"BETA_TESTER", "currencyCode":"SEK", "paymentMethod":"SWISH", "detailsHash":"hashhash" } }
+
+<> 2019-02-21T100408.200.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{  "btcAmount":"1.0", "transactionId":"IDIDIDID", "badge": { "profilePubKey": "abc123", "id": "test", "badgeType":"BETA_TESTER", "currencyCode":"SEK", "paymentMethod":"SWISH", "detailsHash":"hashhash" } }
+
+<> 2019-02-21T095856.200.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{  "btcAmount":"1.0", "transactionId":"IDIDIDID", "badge": { "profilePubKey": "abc123", "id": "test", "badgeType":"BETA_TESTER", "currencyCode":"SEK", "paymentMethod":"SWISH", "detailsHash":"hashhash" } }
+
+<> 2019-02-21T094251.200.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{  "btcAmount":"1.0", "transactionId":"IDIDIDID", "badge": { "profilePubKey": "abc123", "id": "test", "badgeType":"BETA_TESTER", "currencyCode":"SEK", "paymentMethod":"SWISH", "detailsHash":"hashhash" } }
+
+<> 2019-02-21T091200.200.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{  "btcAmount":"1.0", "transactionId":"IDIDIDID", "badge": { "profilePubKey": "abc123", "id": "test", "badgeType":"BETA_TESTER", "currencyCode":"SEK", "paymentMethod":"SWISH", "detailsHash":"hashhash" } }
+
+<> 2019-02-21T084951.500.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{  "btcAmount":"1.0", "transactionId":"IDIDIDID", "badge": { "profilePubKey": "abc123", "id": "test", "badgeType":"BETA_TESTER", "currencyCode":"SEK", "paymentMethod":"Swish", "detailsHash":"hashhash" } }
+
+<> 2019-02-21T084728.500.json
+
+###
+
+GET https://regtest.bytabit.net/badges/abc123
+Accept: */*
+Cache-Control: no-cache
+
+{    "profilePubKey": "abc123",    "badge": {       "id": "test"    } }
+
+<> 2019-02-21T082728.403.html
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{    "profilePubKey": "abc123",    "badge": {       "id": "test"    } }
+
+<> 2019-02-21T081400.200.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{    "profilePubKey": "abc123",    "badge": {       "id": "test"    } }
+
+<> 2019-02-15T083957.500.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{    "profilePubKey": "abc123",    "badge": {       "id": "test"    } }
+
+<> 2019-02-15T082833.500.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{    "profilePubKey": "abc123",    "badge": {       "id": "test"    } }
+
+<> 2019-02-15T075956.500.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{    "profilePubKey": "abc123",    "badge": {       "id": "test"    } }
+
+<> 2019-02-15T075526.500.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{    "profilePubKey": "abc123",    "badge": {       "id": "test"    } }
+
+<> 2019-02-14T103939.500.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{    "profilePubKey": "abc123",    "badge": {       "id": "test"    } }
+
+<> 2019-02-14T103044.500.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{    "profilePubKey": "abc123",    "badge": {       "id": "test"    } }
+
+<> 2019-02-14T101821.500.json
+
+###
+
+GET https://regtest.bytabit.net/badges/abc123
+Accept: */*
+Cache-Control: no-cache
+
+{    "profilePubKey": "abc123",    "badge": {       "id": "test"    } }
+
+<> 2019-02-14T101606.403.html
+
+###
+
+GET https://regtest.bytabit.net/badges/abc123
+Accept: */*
+Cache-Control: no-cache
+
+{    "profilePubKey": "abc123",    "badge": {       "id": "test"    } }
+
+<> 2019-02-14T101432.403.html
+
+###
+
+GET https://regtest.bytabit.net/badges/abc123
+Accept: */*
+Cache-Control: no-cache
+
+{    "profilePubKey": "abc123",    "badge": {       "id": "test"    } }
+
+<> 2019-02-14T101431.403.html
+
+###
+
+GET https://regtest.bytabit.net/badges/abc123
+Accept: */*
+Cache-Control: no-cache
+
+{    "profilePubKey": "abc123",    "badge": {       "id": "test"    } }
+
+<> 2019-02-14T101419.403.html
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{    "profilePubKey": "abc123",    "badge": {       "id": "test"    } }
+
+<> 2019-02-14T101319.500.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{    "profilePubKey": "abc123",    "badge": {       "id": "test"    } }
+
+<> 2019-02-13T110857.502.json
+
+###
+
+GET https://regtest.bytabit.net/badges/abc123
+Accept: */*
+Cache-Control: no-cache
+
+{    "profilePubKey": "abc123",    "badge": {       "id": "test"    } }
+
+<> 2019-02-13T110838.403.html
+
+###
+
+GET https://regtest.bytabit.net/badges/abc123
+Accept: */*
+Cache-Control: no-cache
+
+{    "profilePubKey": "abc123",    "badge": {       "id": "test"    } }
+
+<> 2019-02-13T110659.403.html
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{    "profilePubKey": "abc123",    "badge": {       "id": "test"    } }
+
+<> 2019-02-13T102602.502.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{    "profilePubKey": "abc123",    "badge": {       "id": "test"    } }
+
+<> 2019-02-13T095929.502.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{    "profilePubKey": "abc123",    "badge": {       "id": "test"    } }
+
+<> 2019-02-13T095927.502.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{    "profilePubKey": "abc123",    "badge": {       "id": "test"    } }
+
+<> 2019-02-13T095857.502.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{    "profilePubKey": "abc123",    "badge": {       "id": "test"    } }
+
+<> 2019-02-13T095703.502.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{    "profilePubKey": "abc123",    "badge": {       "id": "test"    } }
+
+<> 2019-02-13T095701.502.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{    "profilePubKey": "abc123",    "badge": {       "id": "test"    } }
+
+<> 2019-02-13T095657.502.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{    "profilePubKey": "abc123",    "badge": {       "id": "test"    } }
+
+<> 2019-02-13T092204.502.json
+
+###
+
+PUT https://regtest.bytabit.net/badges/abc123/test
+Accept: */*
+Cache-Control: no-cache
+
+{    "profilePubKey": "abc123",    "badge": {       "id": "test"    } }
+
+<> 2019-02-04T105535.502.json
+
+###
+
+GET https://regtest.bytabit.net/badges?profilePubKey=abc123
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-02-03T010059.200.json
+
+###
+
+GET https://regtest.bytabit.net/badges?profilePubKey=abc123
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-02-02T111912.200.json
+
+###
+
+GET https://regtest.bytabit.net/badges?profilePubKey=abc123
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-02-02T111807.200.json
+
+###
+

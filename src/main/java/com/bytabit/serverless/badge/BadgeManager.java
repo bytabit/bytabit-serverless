@@ -1,56 +1,69 @@
 package com.bytabit.serverless.badge;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
-import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
-import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.dynamodbv2.document.DynamoDB;
+import com.amazonaws.services.dynamodbv2.document.Item;
+import com.amazonaws.services.dynamodbv2.document.Table;
+import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 import com.bytabit.serverless.badge.model.Badge;
-import com.bytabit.serverless.common.DynamoDBAdapter;
+import com.bytabit.serverless.common.DateConverter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Slf4j
 public class BadgeManager {
 
-    // get the table name from env. var. set in serverless.yml
-    private static final String PRODUCTS_TABLE_NAME = System.getenv("PRODUCTS_TABLE_NAME");
+    private final AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard().build();
+    private final DynamoDB dynamoDB = new DynamoDB(client);
 
-    private final DynamoDBMapper dbMapper;
+    private final String BADGE_TABLE = System.getenv("BADGE_TABLE");
+    private final Table table = dynamoDB.getTable(BADGE_TABLE);
+    private final Gson gson;
 
     public BadgeManager() {
 
-        // build the dbMapper config
-        DynamoDBMapperConfig mapperConfig = DynamoDBMapperConfig.builder()
-                .withTableNameOverride(new DynamoDBMapperConfig.TableNameOverride(PRODUCTS_TABLE_NAME))
-                .build();
-
-        // get the dbAdapter
-        DynamoDBAdapter dbAdapter = DynamoDBAdapter.getInstance();
-
-        // create the dbMapper with config
-        this.dbMapper = dbAdapter.createDbMapper(mapperConfig);
+        gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .registerTypeAdapter(Date.class, new DateConverter())
+                .create();
     }
 
     public List<Badge> getByProfilePubKey(String profilePubKey) {
 
-        HashMap<String, AttributeValue> attributes = new HashMap<>();
-        attributes.put(":profilePubKey", new AttributeValue().withS(profilePubKey));
+        HashMap<String, String> attributes = new HashMap<>();
+        attributes.put(":profilePubKey", profilePubKey);
 
-        DynamoDBQueryExpression<Badge> queryExp = new DynamoDBQueryExpression<Badge>()
+        QuerySpec querySpec = new QuerySpec()
                 .withKeyConditionExpression("profilePubKey = :profilePubKey")
-                .withExpressionAttributeValues(attributes);
+                .withNameMap(attributes);
 
-        PaginatedQueryList<Badge> badges = this.dbMapper.query(Badge.class, queryExp);
+        List<Badge> badges = StreamSupport.stream(table.query(querySpec).spliterator(), false)
+                .map(Item::toJSON)
+                .map(json -> gson.fromJson(json, Badge.class))
+                .collect(Collectors.toList());
 
         log.info("Badge getByProfilePubKey(): {}", badges);
+
         return badges;
     }
 
     public void put(Badge badge) {
-        log.info("Badge put(): {}", badge.toString());
-        this.dbMapper.save(badge);
+
+        // TODO validate badge parameters
+
+        badge.setUpdated(new Date());
+
+        String badgeJson = gson.toJson(badge);
+        log.info("Badge put(): {}", badgeJson);
+
+        table.putItem(Item.fromJSON(badgeJson));
     }
 }
