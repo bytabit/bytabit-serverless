@@ -9,8 +9,6 @@ import com.bytabit.serverless.common.DateConverter;
 import com.bytabit.serverless.common.Response;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Date;
@@ -21,16 +19,13 @@ public class PutBadgeHandler implements RequestHandler<Map<String, Object>, ApiG
 
     private BadgeManager badgeManager = new BadgeManager();
 
-    Gson gson;
-    JsonParser jsonParser;
+    private final Gson gson;
 
     public PutBadgeHandler() {
         gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .registerTypeAdapter(Date.class, new DateConverter())
                 .create();
-
-        jsonParser = new JsonParser();
     }
 
     @Override

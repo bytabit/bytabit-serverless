@@ -6,6 +6,7 @@ import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
+import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import com.bytabit.serverless.badge.model.Badge;
 import com.bytabit.serverless.common.DateConverter;
 import com.google.gson.Gson;
@@ -38,12 +39,10 @@ public class BadgeManager {
 
     public List<Badge> getByProfilePubKey(String profilePubKey) {
 
-        HashMap<String, String> attributes = new HashMap<>();
-        attributes.put(":profilePubKey", profilePubKey);
-
         QuerySpec querySpec = new QuerySpec()
                 .withKeyConditionExpression("profilePubKey = :profilePubKey")
-                .withNameMap(attributes);
+                .withValueMap(new ValueMap()
+                        .withString(":profilePubKey", profilePubKey));
 
         List<Badge> badges = StreamSupport.stream(table.query(querySpec).spliterator(), false)
                 .map(Item::toJSON)
