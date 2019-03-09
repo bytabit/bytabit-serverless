@@ -2,15 +2,14 @@
  * Copyright 2019 Bytabit AB
  */
 
-package com.bytabit.serverless.badge;
+package com.bytabit.serverless.trade;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.bytabit.serverless.badge.model.Badge;
 import com.bytabit.serverless.common.ApiGatewayResponse;
 import com.bytabit.serverless.common.DateConverter;
 import com.bytabit.serverless.common.Response;
 import com.bytabit.serverless.common.WebRequestHandler;
+import com.bytabit.serverless.trade.model.TradeServiceResource;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.extern.slf4j.Slf4j;
@@ -20,13 +19,13 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-public class GetBadgeHandler extends WebRequestHandler {
+public class GetByIdTradeHandler extends WebRequestHandler {
 
-    private BadgeManager badgeManager = new BadgeManager();
+    private TradeManager tradeManager = new TradeManager();
 
     private final Gson gson;
 
-    public GetBadgeHandler() {
+    public GetByIdTradeHandler() {
         gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .registerTypeAdapter(Date.class, new DateConverter())
@@ -39,22 +38,31 @@ public class GetBadgeHandler extends WebRequestHandler {
 
             log.debug("input: {}", input);
 
-            String profilePubKey = getPathParameter(input, "profilePubKey");
+            String id = getPathParameter(input, "id");
+            String versionParam = getQueryStringParameter(input, "version");
 
-            List<Badge> badges = badgeManager.getByProfilePubKey(profilePubKey);
+            log.debug("VERSION = {}",versionParam);
+
+            long version = 0L;
+
+            if (versionParam != null) {
+                version = Long.parseLong(versionParam);
+            }
+
+            List<TradeServiceResource> trades = tradeManager.getById(id, version);
 
             // send the response back
             return ApiGatewayResponse.builder()
                     .setStatusCode(200)
-                    .setObjectBody(badges)
+                    .setObjectBody(trades)
                     //.setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & Serverless"))
                     .build();
 
         } catch (Exception ex) {
-            log.error("Error in get badges: {}\n{}", ex, ex.getStackTrace());
+            log.error("Error in get trades: {}\n{}", ex, ex.getStackTrace());
 
             // send the error response back
-            Response responseBody = new Response("Error in getting badges: ", input);
+            Response responseBody = new Response("Error in getting trades: ", input);
             return ApiGatewayResponse.builder()
                     .setStatusCode(500)
                     .setObjectBody(responseBody)

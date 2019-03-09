@@ -1,11 +1,11 @@
 # package directories
-node_modules
-jspm_packages
+node_modules/
+jspm_packages/
 
 # Serverless directories
-.serverless
+.serverless/
 
-/.idea/
-/.gradle/
-/build
-/gradle
+.idea/
+.gradle/
+build/
+gradle/

@@ -1,3 +1,7 @@
+/*
+ * Copyright 2019 Bytabit AB
+ */
+
 package com.bytabit.serverless.badge.model;
 
 import lombok.Data;

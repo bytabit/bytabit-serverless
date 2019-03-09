@@ -1,3 +1,7 @@
+/*
+ * Copyright 2019 Bytabit AB
+ */
+
 package com.bytabit.serverless.badge;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;

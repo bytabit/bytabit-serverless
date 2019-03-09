@@ -1,6 +1,5 @@
 /*
- * Copyright 2018 Bytabit AB
- *
+ * Copyright 2019 Bytabit AB
  */
 
 const Offer = require("../../../main/js/offer/offer");

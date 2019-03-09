@@ -1,8 +1,0 @@
-{
-  "profilePubKey": "abc123",
-  "id": "test",
-  "badgeType": "BETA_TESTER",
-  "currencyCode": "SEK",
-  "paymentMethod": "SWISH",
-  "@timestamp": "2019-02-22T06:46:46.983Z"
-}

@@ -1,3 +1,7 @@
+/*
+ * Copyright 2019 Bytabit AB
+ */
+
 package com.bytabit.serverless.badge;
 
 import com.amazonaws.services.lambda.runtime.Context;
@@ -7,6 +11,7 @@ import com.bytabit.serverless.badge.model.BadgeRequest;
 import com.bytabit.serverless.common.ApiGatewayResponse;
 import com.bytabit.serverless.common.DateConverter;
 import com.bytabit.serverless.common.Response;
+import com.bytabit.serverless.common.WebRequestHandler;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +20,7 @@ import java.util.Date;
 import java.util.Map;
 
 @Slf4j
-public class PutBadgeHandler implements RequestHandler<Map<String, Object>, ApiGatewayResponse> {
+public class PutBadgeHandler extends WebRequestHandler {
 
     private BadgeManager badgeManager = new BadgeManager();
 
@@ -35,18 +40,16 @@ public class PutBadgeHandler implements RequestHandler<Map<String, Object>, ApiG
 
             log.debug("input: {}", input);
 
-            String profilePubKey = (String) ((Map) input.get("pathParameters")).get("profilePubKey");
-            String id = (String) ((Map) input.get("pathParameters")).get("id");
+            String profilePubKey = getPathParameter(input, "profilePubKey");
+            String id = getPathParameter(input, "id");
 
             // get the body and badge json from input
-            String badgeRequestJson = (String) input.get("body");
+            String badgeRequestJson = getBody(input);
             BadgeRequest badgeRequest = gson.fromJson(badgeRequestJson, BadgeRequest.class);
             Badge badge = badgeRequest.getBadge();
 
-            if (!badge.getProfilePubKey().equals(profilePubKey) || !badge.getId().equals(id)) {
-                throw new BadgeException(String.format("Request URL profilePubKey/id (%s/%s) don't match body: %s.",
-                        profilePubKey, id, badgeRequestJson));
-            }
+            badge.setProfilePubKey(profilePubKey);
+            badge.setId(id);
 
             badgeManager.put(badge);
 
