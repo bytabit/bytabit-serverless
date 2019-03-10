@@ -37,8 +37,6 @@ public class GetBadgeHandler extends WebRequestHandler {
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         try {
 
-            log.debug("input: {}", input);
-
             String profilePubKey = getPathParameter(input, "profilePubKey");
 
             List<Badge> badges = badgeManager.getByProfilePubKey(profilePubKey);

@@ -5,14 +5,12 @@
 package com.bytabit.serverless.offer;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.bytabit.serverless.common.ApiGatewayResponse;
 import com.bytabit.serverless.common.Response;
 import com.bytabit.serverless.common.WebRequestHandler;
 import com.bytabit.serverless.offer.model.Offer;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -24,16 +22,14 @@ public class GetByIdOfferHandler extends WebRequestHandler {
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         try {
 
-            log.debug("input: {}", input);
-
             String id = getPathParameter(input, "id");
 
-            List<Offer> offers = offerManager.getById(id);
+            Offer offer = offerManager.getById(id);
 
             // send the response back
             return ApiGatewayResponse.builder()
                     .setStatusCode(200)
-                    .setObjectBody(offers)
+                    .setObjectBody(offer)
                     //.setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & Serverless"))
                     .build();
 

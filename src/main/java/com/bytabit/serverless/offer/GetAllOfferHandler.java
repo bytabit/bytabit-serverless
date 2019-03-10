@@ -24,8 +24,6 @@ public class GetAllOfferHandler extends WebRequestHandler {
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         try {
 
-            log.debug("input: {}", input);
-
             List<Offer> offers = offerManager.getAll();
 
             // send the response back

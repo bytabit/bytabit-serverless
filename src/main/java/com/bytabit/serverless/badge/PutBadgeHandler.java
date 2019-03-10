@@ -38,8 +38,6 @@ public class PutBadgeHandler extends WebRequestHandler {
 
         try {
 
-            log.debug("input: {}", input);
-
             String profilePubKey = getPathParameter(input, "profilePubKey");
             String id = getPathParameter(input, "id");
 

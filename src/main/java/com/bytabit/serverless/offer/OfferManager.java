@@ -52,20 +52,32 @@ public class OfferManager {
         return badges;
     }
 
-    public List<Offer> getById(String id) {
+    public Offer getById(String id) {
 
         QuerySpec querySpec = new QuerySpec()
                 .withKeyConditionExpression("id = :id")
                 .withValueMap(new ValueMap().withString(":id", id));
 
-        List<Offer> offers = StreamSupport.stream(table.query(querySpec).spliterator(), false)
+        Offer offer = StreamSupport.stream(table.query(querySpec).spliterator(), false)
                 .map(Item::toJSON)
                 .map(json -> gson.fromJson(json, Offer.class))
-                .collect(Collectors.toList());
+                .findFirst()
+                .orElseThrow(() -> new OfferException(String.format("Offer with id: %s not found", id)));
 
-        log.info("Offer getById(): {}", offers);
+        log.info("Offer getById(): {}", offer);
 
-        return offers;
+        return offer;
+    }
+
+    public Offer delete(String id) {
+
+        Offer offer = getById(id);
+
+        table.deleteItem("id", offer.getId());
+
+        log.info("Offer deleteById(): {}", offer);
+
+        return offer;
     }
 
     public void put(Offer offer) {
