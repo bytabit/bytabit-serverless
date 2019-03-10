@@ -4,6 +4,7 @@
 
 package com.bytabit.serverless.trade.model;
 
+import com.google.gson.JsonObject;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
@@ -21,6 +22,6 @@ public class TradeServiceResource {
     private String offerId;
 
     @NonNull
-    private String trade;
+    private JsonObject trade;
 
 }
