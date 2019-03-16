@@ -5,17 +5,12 @@
 package com.bytabit.serverless.trade;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.bytabit.serverless.common.ApiGatewayResponse;
-import com.bytabit.serverless.common.DateConverter;
 import com.bytabit.serverless.common.Response;
 import com.bytabit.serverless.common.WebRequestHandler;
 import com.bytabit.serverless.trade.model.TradeServiceResource;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Date;
 import java.util.Map;
 
 @Slf4j
@@ -23,13 +18,8 @@ public class PutTradeHandler extends WebRequestHandler {
 
     private TradeManager tradeManager = new TradeManager();
 
-    private final Gson gson;
-
     public PutTradeHandler() {
-        gson = new GsonBuilder()
-                .setPrettyPrinting()
-                .registerTypeAdapter(Date.class, new DateConverter())
-                .create();
+        super();
     }
 
     @Override

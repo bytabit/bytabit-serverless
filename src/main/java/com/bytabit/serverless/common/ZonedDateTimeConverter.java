@@ -4,30 +4,33 @@
 
 package com.bytabit.serverless.common;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverter;
+import com.google.gson.*;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.reflect.Type;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
-@Target({ElementType.METHOD, ElementType.FIELD})
-@Retention(RetentionPolicy.RUNTIME)
-@DynamoDBTypeConverted(converter = ZonedDateTimeConverter.Converter.class)
-public @interface ZonedDateTimeConverter {
+public class ZonedDateTimeConverter implements JsonSerializer<ZonedDateTime>, JsonDeserializer<ZonedDateTime> {
 
-    public static class Converter implements DynamoDBTypeConverter<String, ZonedDateTime> {
+    private final DateTimeFormatter dateFormat;
 
-        @Override
-        public String convert(final ZonedDateTime zonedDateTime) {
-            return zonedDateTime.toString();
-        }
+    public ZonedDateTimeConverter() {
+        dateFormat = DateTimeFormatter.ISO_DATE_TIME.withZone(ZoneId.of("UTC"));
+    }
 
-        @Override
-        public ZonedDateTime unconvert(final String zonedDateTimeString) {
-            return ZonedDateTime.parse(zonedDateTimeString);
+    @Override
+    public JsonElement serialize(ZonedDateTime zonedDateTime, Type type, JsonSerializationContext context) {
+        return new JsonPrimitive(zonedDateTime.format(dateFormat));
+    }
+
+    @Override
+    public ZonedDateTime deserialize(JsonElement json, Type type, JsonDeserializationContext context) {
+        try {
+            return ZonedDateTime.parse(json.getAsString(), dateFormat);
+        } catch (DateTimeParseException e) {
+            throw new JsonParseException(e.getCause());
         }
     }
 }

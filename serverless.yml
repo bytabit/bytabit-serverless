@@ -33,6 +33,13 @@ package:
   artifact: build/distributions/bytabit-serverless.zip
 
 functions:
+  version-get:
+    handler: com.bytabit.serverless.common.GetVersionHandler
+    events:
+      - http:
+          path: version
+          method: get
+          cors: true
   offers-put:
     handler: com.bytabit.serverless.offer.PutOfferHandler
     events:

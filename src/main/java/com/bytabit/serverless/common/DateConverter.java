@@ -15,7 +15,7 @@ import java.util.TimeZone;
 
 public class DateConverter implements JsonSerializer<Date>, JsonDeserializer<Date> {
 
-    private DateFormat dateFormat;
+    private final DateFormat dateFormat;
 
     public DateConverter() {
         dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");

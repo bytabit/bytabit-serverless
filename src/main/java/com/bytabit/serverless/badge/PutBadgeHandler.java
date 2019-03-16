@@ -5,18 +5,13 @@
 package com.bytabit.serverless.badge;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.bytabit.serverless.badge.model.Badge;
 import com.bytabit.serverless.badge.model.BadgeRequest;
 import com.bytabit.serverless.common.ApiGatewayResponse;
-import com.bytabit.serverless.common.DateConverter;
 import com.bytabit.serverless.common.Response;
 import com.bytabit.serverless.common.WebRequestHandler;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Date;
 import java.util.Map;
 
 @Slf4j
@@ -24,19 +19,15 @@ public class PutBadgeHandler extends WebRequestHandler {
 
     private BadgeManager badgeManager = new BadgeManager();
 
-    private final Gson gson;
-
     public PutBadgeHandler() {
-        gson = new GsonBuilder()
-                .setPrettyPrinting()
-                .registerTypeAdapter(Date.class, new DateConverter())
-                .create();
+        super();
     }
 
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
 
         try {
+            log.debug("input: {}", input);
 
             String profilePubKey = getPathParameter(input, "profilePubKey");
             String id = getPathParameter(input, "id");

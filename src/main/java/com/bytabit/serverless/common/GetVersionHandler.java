@@ -2,47 +2,42 @@
  * Copyright 2019 Bytabit AB
  */
 
-package com.bytabit.serverless.badge;
+package com.bytabit.serverless.common;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.bytabit.serverless.badge.model.Badge;
-import com.bytabit.serverless.common.ApiGatewayResponse;
-import com.bytabit.serverless.common.Response;
-import com.bytabit.serverless.common.WebRequestHandler;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.List;
+import java.io.InputStream;
 import java.util.Map;
+import java.util.Properties;
 
 @Slf4j
-public class GetBadgeHandler extends WebRequestHandler {
+public class GetVersionHandler extends WebRequestHandler {
 
-    private BadgeManager badgeManager = new BadgeManager();
-
-    public GetBadgeHandler() {
+    public GetVersionHandler() {
         super();
     }
 
     @Override
     public ApiGatewayResponse handleRequest(Map<String, Object> input, Context context) {
         try {
-
-            String profilePubKey = getPathParameter(input, "profilePubKey");
-
-            List<Badge> badges = badgeManager.getByProfilePubKey(profilePubKey);
+            Properties prop = new Properties();
+            ClassLoader loader = Thread.currentThread().getContextClassLoader();
+            InputStream stream = loader.getResourceAsStream("config.properties");
+            prop.load(stream);
 
             // send the response back
             return ApiGatewayResponse.builder()
                     .setStatusCode(200)
-                    .setObjectBody(badges)
+                    .setObjectBody(prop.getProperty("version"))
                     //.setHeaders(Collections.singletonMap("X-Powered-By", "AWS Lambda & Serverless"))
                     .build();
 
         } catch (Exception ex) {
-            log.error("Error in get badges: {}\n{}", ex, ex.getStackTrace());
+            log.error("Error in get version: {}\n{}", ex, ex.getStackTrace());
 
             // send the error response back
-            Response responseBody = new Response("Error in getting badges: ", input);
+            Response responseBody = new Response("Error in get version: ", input);
             return ApiGatewayResponse.builder()
                     .setStatusCode(500)
                     .setObjectBody(responseBody)

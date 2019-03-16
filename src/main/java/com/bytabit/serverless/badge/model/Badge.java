@@ -11,7 +11,6 @@ import lombok.Data;
 import lombok.NonNull;
 
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
 import java.util.Date;
 
 @Data
@@ -30,9 +29,9 @@ public class Badge {
 
     private BadgeType badgeType;
 
-    private ZonedDateTime validFrom;
+    private Date validFrom;
 
-    private ZonedDateTime validTo;
+    private Date validTo;
 
     private CurrencyCode currencyCode;
 

@@ -6,15 +6,11 @@ package com.bytabit.serverless.offer;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.bytabit.serverless.common.ApiGatewayResponse;
-import com.bytabit.serverless.common.DateConverter;
 import com.bytabit.serverless.common.Response;
 import com.bytabit.serverless.common.WebRequestHandler;
 import com.bytabit.serverless.offer.model.Offer;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Date;
 import java.util.Map;
 
 @Slf4j
@@ -22,13 +18,8 @@ public class PutOfferHandler extends WebRequestHandler {
 
     private OfferManager offerManager = new OfferManager();
 
-    private final Gson gson;
-
     public PutOfferHandler() {
-        gson = new GsonBuilder()
-                .setPrettyPrinting()
-                .registerTypeAdapter(Date.class, new DateConverter())
-                .create();
+        super();
     }
 
     @Override
