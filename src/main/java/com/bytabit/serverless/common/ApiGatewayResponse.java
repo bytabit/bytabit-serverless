@@ -56,6 +56,7 @@ public class ApiGatewayResponse {
         private static final Gson gson = new GsonBuilder()
                 //.setPrettyPrinting()
                 .registerTypeAdapter(Date.class, new DateConverter())
+                .setExclusionStrategies(new ExcludeStrategy())
                 .create();
 
         private int statusCode = 200;

@@ -18,5 +18,5 @@ public class BadgeRequest {
     @NonNull
     private BigDecimal btcAmount;
 
-    private String transactionId;
+    private String transactionHash;
 }

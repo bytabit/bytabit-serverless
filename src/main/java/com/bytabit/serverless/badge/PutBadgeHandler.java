@@ -39,6 +39,8 @@ public class PutBadgeHandler extends WebRequestHandler {
 
             badge.setProfilePubKey(profilePubKey);
             badge.setId(id);
+            badge.setBtcAmount(badgeRequest.getBtcAmount());
+            badge.setTransactionHash(badgeRequest.getTransactionHash());
 
             badgeManager.put(badge);
 
