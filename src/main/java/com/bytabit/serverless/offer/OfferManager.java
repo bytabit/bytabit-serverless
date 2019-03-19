@@ -11,6 +11,8 @@ import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
+import com.bytabit.serverless.badge.BadgeManager;
+import com.bytabit.serverless.badge.model.Badge;
 import com.bytabit.serverless.common.DateConverter;
 import com.bytabit.serverless.offer.model.Offer;
 import com.google.gson.Gson;
@@ -32,12 +34,16 @@ public class OfferManager {
     private final Table table = dynamoDB.getTable(OFFER_TABLE);
     private final Gson gson;
 
+    private final BadgeManager badgeManager;
+
     public OfferManager() {
 
         gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .registerTypeAdapter(Date.class, new DateConverter())
                 .create();
+
+        badgeManager = new BadgeManager();
     }
 
     public List<Offer> getAll() {
@@ -89,6 +95,17 @@ public class OfferManager {
         String offerJson = gson.toJson(offer);
         log.info("Offer put(): {}", offerJson);
 
-        table.putItem(Item.fromJSON(offerJson));
+        Date currentDate = new Date();
+        List<Badge> badges = badgeManager.getByProfilePubKey(offer.getMakerProfilePubKey());
+        boolean hasBadge = badges.stream()
+                .filter(b -> b.getBadgeType().equals(Badge.BadgeType.OFFER_MAKER))
+                .filter(b -> b.getValidFrom().compareTo(currentDate) <= 0 && b.getValidTo().compareTo(currentDate) >= 0)
+                .anyMatch(b -> b.getCurrencyCode().equals(offer.getCurrencyCode()));
+
+        if (hasBadge) {
+            table.putItem(Item.fromJSON(offerJson));
+        } else {
+            throw new OfferException(String.format("No OFFER_MAKER badge found for currency %s", offer.getCurrencyCode()));
+        }
     }
 }
