@@ -19,8 +19,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.extern.slf4j.Slf4j;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -33,6 +37,7 @@ public class OfferManager {
     private final String OFFER_TABLE = System.getenv("OFFER_TABLE");
     private final Table table = dynamoDB.getTable(OFFER_TABLE);
     private final Gson gson;
+    private final DateFormat dateFormat;
 
     private final BadgeManager badgeManager;
 
@@ -43,19 +48,37 @@ public class OfferManager {
                 .registerTypeAdapter(Date.class, new DateConverter())
                 .create();
 
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+
         badgeManager = new BadgeManager();
     }
 
     public List<Offer> getAll() {
 
-        List<Offer> badges = StreamSupport.stream(table.scan().spliterator(), false)
+        List<Offer> offers = StreamSupport.stream(table.scan().spliterator(), false)
                 .map(Item::toJSON)
                 .map(json -> gson.fromJson(json, Offer.class))
                 .collect(Collectors.toList());
 
-        log.info("Offer getAll(): {}", badges);
+        // remove stale offers that haven't been updated in the past 10 minutes
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        c.add(Calendar.MINUTE, -5);
+        Date cutoffTime = c.getTime();
 
-        return badges;
+        offers.stream().filter(o -> o.getUpdated().compareTo(cutoffTime) < 0)
+                .forEach(o -> {
+                    table.deleteItem("id", o.getId());
+                    log.info("Removed offer not updated since {}: {}", dateFormat.format(cutoffTime), o);
+                });
+
+        List<Offer> freshOffers = offers.stream().filter(o -> o.getUpdated().compareTo(cutoffTime) >= 0)
+                .collect(Collectors.toList());
+
+        log.info("Offer getAll(): {}", freshOffers);
+
+        return freshOffers;
     }
 
     public Offer getById(String id) {
