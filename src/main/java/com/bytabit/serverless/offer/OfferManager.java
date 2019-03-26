@@ -48,7 +48,7 @@ public class OfferManager {
                 .registerTypeAdapter(Date.class, new DateConverter())
                 .create();
 
-        dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ");
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         badgeManager = new BadgeManager();
