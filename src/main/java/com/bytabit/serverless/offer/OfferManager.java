@@ -61,10 +61,10 @@ public class OfferManager {
                 .map(json -> gson.fromJson(json, Offer.class))
                 .collect(Collectors.toList());
 
-        // remove stale offers that haven't been updated in the past 10 minutes
+        // remove stale offers that haven't been updated in the past 60 minutes
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
-        c.add(Calendar.MINUTE, -5);
+        c.add(Calendar.MINUTE, -60);
         Date cutoffTime = c.getTime();
 
         offers.stream().filter(o -> o.getUpdated().compareTo(cutoffTime) < 0)
