@@ -38,4 +38,6 @@ public class Offer {
     private BigDecimal price;
 
     private Date updated;
+
+    private String signature;
 }
