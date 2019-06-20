@@ -22,6 +22,9 @@ public class TradeServiceResource {
     private String offerId;
 
     @NonNull
+    private Boolean arbitrate;
+
+    @NonNull
     private JsonObject trade;
 
 }

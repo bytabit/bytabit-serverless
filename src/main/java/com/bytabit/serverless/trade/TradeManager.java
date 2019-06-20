@@ -11,6 +11,7 @@ import com.amazonaws.services.dynamodbv2.document.Index;
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
+import com.amazonaws.services.dynamodbv2.document.spec.ScanSpec;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import com.bytabit.serverless.common.DateConverter;
 import com.bytabit.serverless.trade.model.TradeServiceResource;
@@ -72,6 +73,22 @@ public class TradeManager {
                 .collect(Collectors.toList());
 
         log.info("Trade getByOfferId(): {}", trades);
+
+        return trades;
+    }
+
+    public List<TradeServiceResource> getAllArbitrate(long version) {
+
+        ScanSpec scanSpec = new ScanSpec()
+                .withFilterExpression("arbitrate = :arbitrate AND version > :version")
+                .withValueMap(new ValueMap().withBoolean(":arbitrate", true).withLong(":version", version));
+
+        List<TradeServiceResource> trades = StreamSupport.stream(table.scan(scanSpec).spliterator(), false)
+                .map(Item::toJSON)
+                .map(json -> gson.fromJson(json, TradeServiceResource.class))
+                .collect(Collectors.toList());
+
+        log.info("Trade getAllArbitrate(): {}", trades);
 
         return trades;
     }

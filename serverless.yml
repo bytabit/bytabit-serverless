@@ -82,6 +82,13 @@ functions:
           path: trades/{id}
           method: get
           cors: true
+  trades-arbitrate:
+    handler: com.bytabit.serverless.trade.GetAllArbitrateTradeHandler
+    events:
+      - http:
+          path: trades/arbitrate
+          method: get
+          cors: true
   trades-getbyoffer:
     handler: com.bytabit.serverless.trade.GetByOfferTradeHandler
     events:
