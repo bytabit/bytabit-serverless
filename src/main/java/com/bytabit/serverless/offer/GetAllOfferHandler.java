@@ -5,7 +5,6 @@
 package com.bytabit.serverless.offer;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.bytabit.serverless.common.ApiGatewayResponse;
 import com.bytabit.serverless.common.Response;
 import com.bytabit.serverless.common.WebRequestHandler;

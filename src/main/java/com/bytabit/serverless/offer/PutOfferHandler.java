@@ -33,7 +33,9 @@ public class PutOfferHandler extends WebRequestHandler {
             String offerJson = getBody(input);
             Offer offer = gson.fromJson(offerJson, Offer.class);
 
-            offer.setId(id);
+            if (!offer.getId().equals(id)) {
+                throw new OfferException("PutOffer request path id does not match offer body id.");
+            }
 
             offerManager.put(offer);
 
