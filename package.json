@@ -12,7 +12,7 @@
     "serverless-domain-manager": "^1.1.25"
   },
   "dependencies": {
-    "serverless": "^1.46.1",
+    "serverless": "^1.48.3",
     "serverless-websockets-plugin": "^1.0.0"
   }
 }

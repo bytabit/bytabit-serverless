@@ -9,3 +9,8 @@ jspm_packages/
 .gradle/
 build/
 gradle/
+
+out/
+
+terraform/*.tfstate*
+terraform/.terraform

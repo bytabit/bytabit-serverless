@@ -26,6 +26,8 @@ public class GetVersionHandler extends WebRequestHandler {
             InputStream stream = loader.getResourceAsStream("config.properties");
             prop.load(stream);
 
+            log.debug("Get version: {}", prop.getProperty("version"));
+
             // send the response back
             return ApiGatewayResponse.builder()
                     .setStatusCode(200)
