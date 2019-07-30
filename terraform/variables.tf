@@ -10,10 +10,6 @@ variable "app_version" {
   default = "0.0.0"
 }
 
-variable "app_stage" {
-  default = "test"
-}
-
 variable "log_retention_in_days" {
   default = 30
 }

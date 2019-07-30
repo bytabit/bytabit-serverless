@@ -6,19 +6,19 @@ data "aws_route53_zone" "root_domain" {
 
 # Find a certificate that is issued
 data "aws_acm_certificate" "api" {
-  domain = "${var.app_stage}.${var.root_domain_name}"
+  domain = "${terraform.workspace}.${var.root_domain_name}"
   statuses = [
     "ISSUED"]
 }
 
 # The domain name to use with api-gateway
 resource "aws_api_gateway_domain_name" "api" {
-  domain_name = "${var.app_stage}.${var.root_domain_name}"
+  domain_name = "${terraform.workspace}.${var.root_domain_name}"
   certificate_arn = "${data.aws_acm_certificate.api.arn}"
 }
 
 resource "aws_route53_record" "sub_domain" {
-  name = "${var.app_stage}.${var.root_domain_name}"
+  name = "${terraform.workspace}.${var.root_domain_name}"
   type = "A"
   zone_id = "${data.aws_route53_zone.root_domain.zone_id}"
 
