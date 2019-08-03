@@ -1,53 +1,63 @@
-<!--
-title: AWS Serverless REST API example in NodeJS
-description: This example demonstrates how to setup a RESTful Web Service allowing you to create, list, get, update and delete Todos. DynamoDB is used to store the data. 
-layout: Doc
--->
 
-## Setup
+## Setup aws
+
+Install aws cli tool and configure with bytabit access key id, secret key, region 'us-east-1', default output 'json'.
 
 ```bash
-npm install
+$ brew install awscli
+$ aws configure
 ```
+
+## Setup Terraform
+
+Install terraform if not already installed.
 
 ```bash
-gradle wrapper # to build the gradle wrapper jar
-./gradlew build # to build the application jar 
+$ brew install terraform
 ```
 
-## Deploy
+If this is the first time you've used terraform for this project, init project, 
+select and refresh workspaces.
 
-In order to deploy the endpoint simply run
+```bash
+$ cd terraform
+$ terraform init
+$ terraform workspace select regtest
+$ terraform refresh
+$ terraform workspace select test
+$ terraform refresh
+```
+
+## Build Application
+
+Build and zip application jar and it's dependencies and store on aws S3. For now manually set version (eg. v0.4.0).
+
+```bash
+$ ./gradlew buildZip # to build the application jar 
+$ aws s3 cp build/distributions/bytabit-serverless.zip s3://bytabit-serverless/v0.4.0/bytabit-serverless.zip
+```
+
+## Deploy Application with Terraform
+
+In order to deploy the application APIs select the workspace (regtest or test) and apply the terraform config files.
 
 REGTEST
 ```bash
-serverless deploy
-serverless remove
+$ cd terraform
+$ terraform workspace select regtest
+$ terraform apply -var="app_version=0.4.0" # manually set version, see above
 ```
 
 TEST
 ```bash
-serverless deploy --stage test
-serverless remove --stage test
+$ cd terraform
+$ terraform workspace select test
+$ terraform apply -var="app_version=0.4.0" # manually set version, see above
 ```
 
+## Verify Application is Deployed
 
-## Scaling
-
-### AWS Lambda
-
-By default, AWS Lambda limits the total concurrent executions across all functions within a given region to 100. The default limit is a safety limit that protects you from costs due to potential runaway or recursive functions during initial development and testing. To increase this limit above the default, follow the steps in [To request a limit increase for concurrent executions](http://docs.aws.amazon.com/lambda/latest/dg/concurrent-executions.html#increase-concurrent-executions-limit).
-
-### DynamoDB
-
-When you create a table, you specify how much provisioned throughput capacity you want to reserve for reads and writes. DynamoDB will reserve the necessary resources to meet your throughput needs while ensuring consistent, low-latency performance. You can change the provisioned throughput and increasing or decreasing capacity as needed.
-
-This is can be done via settings in the `serverless.yml`.
-
-```yaml
-  ProvisionedThroughput:
-    ReadCapacityUnits: 1
-    WriteCapacityUnits: 1
+```bash
+$ curl get https://regtest.bytabit.net/version
+$ curl get https://test.bytabit.net/version
 ```
-
-In case you expect a lot of traffic fluctuation we recommend to checkout this guide on how to auto scale DynamoDB [https://aws.amazon.com/blogs/aws/auto-scale-dynamodb-with-dynamic-dynamodb/](https://aws.amazon.com/blogs/aws/auto-scale-dynamodb-with-dynamic-dynamodb/)
