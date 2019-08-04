@@ -12,5 +12,4 @@ gradle/
 
 out/
 
-terraform/*.tfstate*
 terraform/.terraform

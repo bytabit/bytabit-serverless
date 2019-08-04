@@ -73,6 +73,48 @@ resource "aws_cloudwatch_log_group" "put_badge" {
   }
 }
 
+## GET badges/{profilePubKey}
+
+resource "aws_lambda_function" "get_badge" {
+  function_name = "${terraform.workspace}_get_badge"
+
+  # The bucket name as created earlier with "aws s3api create-bucket"
+  s3_bucket = "bytabit-serverless"
+  s3_key = "v${var.app_version}/bytabit-serverless.zip"
+
+  # "main" is the filename within the zip file (main.js) and "handler"
+  # is the name of the property under which the handler function was
+  # exported in that file.
+  handler = "com.bytabit.serverless.badge.GetBadgeHandler"
+  runtime = "java8"
+  memory_size = 256
+  timeout = 10
+
+  role = aws_iam_role.lambda_exec.arn
+
+  environment {
+    variables = {
+      BADGE_TABLE = aws_dynamodb_table.badge.name
+    }
+  }
+
+  depends_on = [
+    "aws_iam_role_policy.lambda_logging",
+    "aws_iam_role_policy.lambda_dynamo",
+    "aws_cloudwatch_log_group.get_badge",
+    "aws_dynamodb_table.badge"]
+}
+
+# Configure log retention
+resource "aws_cloudwatch_log_group" "get_badge" {
+  name = "/aws/lambda/${terraform.workspace}_get_badge"
+  retention_in_days = "${var.log_retention_in_days}"
+
+  tags = {
+    Stage = terraform.workspace
+  }
+}
+
 ## PUT /offers/{id}
 
 resource "aws_lambda_function" "put_offer" {
