@@ -257,7 +257,151 @@ resource "aws_lambda_permission" "delete_offer" {
   source_arn = "${aws_api_gateway_deployment.bytabit.execution_arn}/*/*"
 }
 
-##
+## PUT /trades/{id}
+
+resource "aws_api_gateway_resource" "trades" {
+  rest_api_id = aws_api_gateway_rest_api.bytabit.id
+  parent_id = aws_api_gateway_rest_api.bytabit.root_resource_id
+  path_part = "trades"
+}
+
+resource "aws_api_gateway_resource" "trade_id" {
+  rest_api_id = aws_api_gateway_rest_api.bytabit.id
+  parent_id = aws_api_gateway_resource.trades.id
+  path_part = "{id}"
+}
+
+resource "aws_api_gateway_method" "put_trade" {
+  rest_api_id = aws_api_gateway_rest_api.bytabit.id
+  resource_id = aws_api_gateway_resource.trade_id.id
+  http_method = "PUT"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_integration" "put_trade" {
+  rest_api_id = aws_api_gateway_rest_api.bytabit.id
+  resource_id = aws_api_gateway_method.put_trade.resource_id
+  http_method = aws_api_gateway_method.put_trade.http_method
+
+  integration_http_method = "POST"
+  type = "AWS_PROXY"
+  uri = aws_lambda_function.put_trade.invoke_arn
+}
+
+resource "aws_lambda_permission" "put_trade" {
+  statement_id = "AllowAPIGatewayInvoke"
+  action = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.put_trade.arn
+  principal = "apigateway.amazonaws.com"
+
+  # The /*/* portion grants access from any method on any resource
+  # within the API Gateway "REST API".
+  source_arn = "${aws_api_gateway_deployment.bytabit.execution_arn}/*/*"
+}
+
+## GET /trades/{id}
+
+resource "aws_api_gateway_method" "getById_trade" {
+  rest_api_id = aws_api_gateway_rest_api.bytabit.id
+  resource_id = aws_api_gateway_resource.trade_id.id
+  http_method = "GET"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_integration" "getById_trade" {
+  rest_api_id = aws_api_gateway_rest_api.bytabit.id
+  resource_id = aws_api_gateway_method.getById_trade.resource_id
+  http_method = aws_api_gateway_method.getById_trade.http_method
+
+  integration_http_method = "POST"
+  type = "AWS_PROXY"
+  uri = aws_lambda_function.getById_trade.invoke_arn
+}
+
+resource "aws_lambda_permission" "getById_trade" {
+  statement_id = "AllowAPIGatewayInvoke"
+  action = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.getById_trade.arn
+  principal = "apigateway.amazonaws.com"
+
+  # The /*/* portion grants access from any method on any resource
+  # within the API Gateway "REST API".
+  source_arn = "${aws_api_gateway_deployment.bytabit.execution_arn}/*/*"
+}
+
+## GET /trades/arbitrate
+
+resource "aws_api_gateway_resource" "trade_arbitrate" {
+  rest_api_id = aws_api_gateway_rest_api.bytabit.id
+  parent_id = aws_api_gateway_resource.trades.id
+  path_part = "arbitrate"
+}
+
+resource "aws_api_gateway_method" "getAllArbitrate_trade" {
+  rest_api_id = aws_api_gateway_rest_api.bytabit.id
+  resource_id = aws_api_gateway_resource.trade_arbitrate.id
+  http_method = "GET"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_integration" "getAllArbitrate_trade" {
+  rest_api_id = aws_api_gateway_rest_api.bytabit.id
+  resource_id = aws_api_gateway_method.getAllArbitrate_trade.resource_id
+  http_method = aws_api_gateway_method.getAllArbitrate_trade.http_method
+
+  integration_http_method = "POST"
+  type = "AWS_PROXY"
+  uri = aws_lambda_function.getAllArbitrate_trade.invoke_arn
+}
+
+resource "aws_lambda_permission" "getAllArbitrate_trade" {
+  statement_id = "AllowAPIGatewayInvoke"
+  action = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.getAllArbitrate_trade.arn
+  principal = "apigateway.amazonaws.com"
+
+  # The /*/* portion grants access from any method on any resource
+  # within the API Gateway "REST API".
+  source_arn = "${aws_api_gateway_deployment.bytabit.execution_arn}/*/*"
+}
+
+## GET offers/{id}/trades
+
+resource "aws_api_gateway_resource" "offers_id_trades" {
+  rest_api_id = aws_api_gateway_rest_api.bytabit.id
+  parent_id = aws_api_gateway_resource.offer_id.id
+  path_part = "trades"
+}
+
+resource "aws_api_gateway_method" "getByOffer_trade" {
+  rest_api_id = aws_api_gateway_rest_api.bytabit.id
+  resource_id = aws_api_gateway_resource.offers_id_trades.id
+  http_method = "GET"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_integration" "getByOffer_trade" {
+  rest_api_id = aws_api_gateway_rest_api.bytabit.id
+  resource_id = aws_api_gateway_method.getByOffer_trade.resource_id
+  http_method = aws_api_gateway_method.getByOffer_trade.http_method
+
+  integration_http_method = "POST"
+  type = "AWS_PROXY"
+  uri = aws_lambda_function.getByOffer_trade.invoke_arn
+}
+
+resource "aws_lambda_permission" "getByOffer_trade" {
+  statement_id = "AllowAPIGatewayInvoke"
+  action = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.getByOffer_trade.arn
+  principal = "apigateway.amazonaws.com"
+
+  # The /*/* portion grants access from any method on any resource
+  # within the API Gateway "REST API".
+  source_arn = "${aws_api_gateway_deployment.bytabit.execution_arn}/*/*"
+}
+
+###
 
 resource "aws_api_gateway_base_path_mapping" "api" {
   api_id = "${aws_api_gateway_rest_api.bytabit.id}"
@@ -269,7 +413,15 @@ resource "aws_api_gateway_deployment" "bytabit" {
   depends_on = [
     "aws_api_gateway_integration.get_version",
     "aws_api_gateway_integration.put_badge",
-    "aws_api_gateway_integration.put_offer"
+    "aws_api_gateway_integration.get_badge",
+    "aws_api_gateway_integration.put_offer",
+    "aws_api_gateway_integration.getAll_offer",
+    "aws_api_gateway_integration.getById_offer",
+    "aws_api_gateway_integration.delete_offer",
+    "aws_api_gateway_integration.put_trade",
+    "aws_api_gateway_integration.getById_trade",
+    "aws_api_gateway_integration.getAllArbitrate_trade",
+    "aws_api_gateway_integration.getByOffer_trade"
   ]
 
   rest_api_id = aws_api_gateway_rest_api.bytabit.id

@@ -269,6 +269,7 @@ resource "aws_lambda_function" "delete_offer" {
   environment {
     variables = {
       OFFER_TABLE = aws_dynamodb_table.offer.name
+      BADGE_TABLE = aws_dynamodb_table.badge.name
     }
   }
 
@@ -276,12 +277,182 @@ resource "aws_lambda_function" "delete_offer" {
     "aws_iam_role_policy.lambda_logging",
     "aws_iam_role_policy.lambda_dynamo",
     "aws_cloudwatch_log_group.getById_offer",
-    "aws_dynamodb_table.offer"]
+    "aws_dynamodb_table.offer",
+    "aws_dynamodb_table.badge"
+  ]
 }
 
 # Configure log retention
 resource "aws_cloudwatch_log_group" "delete_offer" {
   name = "/aws/lambda/${terraform.workspace}_delete_offer"
+  retention_in_days = "${var.log_retention_in_days}"
+
+  tags = {
+    Stage = terraform.workspace
+  }
+}
+
+## PUT /trades/{id}
+
+resource "aws_lambda_function" "put_trade" {
+  function_name = "${terraform.workspace}_put_trade"
+
+  # The bucket name as created earlier with "aws s3api create-bucket"
+  s3_bucket = "bytabit-serverless"
+  s3_key = "v${var.app_version}/bytabit-serverless.zip"
+
+  # "main" is the filename within the zip file (main.js) and "handler"
+  # is the name of the property under which the handler function was
+  # exported in that file.
+  handler = "com.bytabit.serverless.trade.PutTradeHandler"
+  runtime = "java8"
+  memory_size = 256
+  timeout = 10
+
+  role = aws_iam_role.lambda_exec.arn
+
+  environment {
+    variables = {
+      TRADE_TABLE = aws_dynamodb_table.trade.name
+    }
+  }
+
+  depends_on = [
+    "aws_iam_role_policy.lambda_logging",
+    "aws_iam_role_policy.lambda_dynamo",
+    "aws_cloudwatch_log_group.put_trade",
+    "aws_dynamodb_table.trade"]
+}
+
+# Configure log retention
+resource "aws_cloudwatch_log_group" "put_trade" {
+  name = "/aws/lambda/${terraform.workspace}_put_trade"
+  retention_in_days = "${var.log_retention_in_days}"
+
+  tags = {
+    Stage = terraform.workspace
+  }
+}
+
+## GET /trades/{id}
+
+resource "aws_lambda_function" "getById_trade" {
+  function_name = "${terraform.workspace}_getById_trade"
+
+  # The bucket name as created earlier with "aws s3api create-bucket"
+  s3_bucket = "bytabit-serverless"
+  s3_key = "v${var.app_version}/bytabit-serverless.zip"
+
+  # "main" is the filename within the zip file (main.js) and "handler"
+  # is the name of the property under which the handler function was
+  # exported in that file.
+  handler = "com.bytabit.serverless.trade.GetByIdTradeHandler"
+  runtime = "java8"
+  memory_size = 256
+  timeout = 10
+
+  role = aws_iam_role.lambda_exec.arn
+
+  environment {
+    variables = {
+      TRADE_TABLE = aws_dynamodb_table.trade.name
+    }
+  }
+
+  depends_on = [
+    "aws_iam_role_policy.lambda_logging",
+    "aws_iam_role_policy.lambda_dynamo",
+    "aws_cloudwatch_log_group.getById_trade",
+    "aws_dynamodb_table.trade"]
+}
+
+# Configure log retention
+resource "aws_cloudwatch_log_group" "getById_trade" {
+  name = "/aws/lambda/${terraform.workspace}_getById_trade"
+  retention_in_days = "${var.log_retention_in_days}"
+
+  tags = {
+    Stage = terraform.workspace
+  }
+}
+
+## GET /trades/arbitrate
+
+resource "aws_lambda_function" "getAllArbitrate_trade" {
+  function_name = "${terraform.workspace}_getAllArbitrate_trade"
+
+  # The bucket name as created earlier with "aws s3api create-bucket"
+  s3_bucket = "bytabit-serverless"
+  s3_key = "v${var.app_version}/bytabit-serverless.zip"
+
+  # "main" is the filename within the zip file (main.js) and "handler"
+  # is the name of the property under which the handler function was
+  # exported in that file.
+  handler = "com.bytabit.serverless.trade.GetAllArbitrateTradeHandler"
+  runtime = "java8"
+  memory_size = 256
+  timeout = 10
+
+  role = aws_iam_role.lambda_exec.arn
+
+  environment {
+    variables = {
+      TRADE_TABLE = aws_dynamodb_table.trade.name
+    }
+  }
+
+  depends_on = [
+    "aws_iam_role_policy.lambda_logging",
+    "aws_iam_role_policy.lambda_dynamo",
+    "aws_cloudwatch_log_group.getAllArbitrate_trade",
+    "aws_dynamodb_table.trade"]
+}
+
+# Configure log retention
+resource "aws_cloudwatch_log_group" "getAllArbitrate_trade" {
+  name = "/aws/lambda/${terraform.workspace}_getAllArbitrate_trade"
+  retention_in_days = "${var.log_retention_in_days}"
+
+  tags = {
+    Stage = terraform.workspace
+  }
+}
+
+## GET offers/{id}/trades
+
+resource "aws_lambda_function" "getByOffer_trade" {
+  function_name = "${terraform.workspace}_getByOffer_trade"
+
+  # The bucket name as created earlier with "aws s3api create-bucket"
+  s3_bucket = "bytabit-serverless"
+  s3_key = "v${var.app_version}/bytabit-serverless.zip"
+
+  # "main" is the filename within the zip file (main.js) and "handler"
+  # is the name of the property under which the handler function was
+  # exported in that file.
+  handler = "com.bytabit.serverless.trade.GetByOfferTradeHandler"
+  runtime = "java8"
+  memory_size = 256
+  timeout = 10
+
+  role = aws_iam_role.lambda_exec.arn
+
+  environment {
+    variables = {
+      TRADE_TABLE = aws_dynamodb_table.trade.name
+    }
+  }
+
+  depends_on = [
+    "aws_iam_role_policy.lambda_logging",
+    "aws_iam_role_policy.lambda_dynamo",
+    "aws_cloudwatch_log_group.getByOffer_trade",
+    "aws_dynamodb_table.trade"]
+}
+
+# Configure log retention
+resource "aws_cloudwatch_log_group" "getByOffer_trade" {
+  name = "/aws/lambda/${terraform.workspace}_getByOffer_trade"
   retention_in_days = "${var.log_retention_in_days}"
 
   tags = {
@@ -352,7 +523,9 @@ resource "aws_iam_role_policy" "lambda_dynamo" {
             "Effect": "Allow",
             "Resource": [
               "${aws_dynamodb_table.badge.arn}",
-              "${aws_dynamodb_table.offer.arn}"
+              "${aws_dynamodb_table.offer.arn}",
+              "${aws_dynamodb_table.trade.arn}",
+              "${aws_dynamodb_table.trade.arn}/*/*"
             ]
         }
     ]
