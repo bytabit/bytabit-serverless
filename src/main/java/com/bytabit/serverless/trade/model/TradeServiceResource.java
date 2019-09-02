@@ -13,6 +13,7 @@ import lombok.NonNull;
 @Builder
 public class TradeServiceResource {
 
+    @NonNull
     private String id;
 
     @NonNull
@@ -25,6 +26,8 @@ public class TradeServiceResource {
     private Boolean arbitrate;
 
     @NonNull
-    private JsonObject trade;
+    private String trade;
+
+    private JsonObject tradeUnencrypted;
 
 }
