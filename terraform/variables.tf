@@ -2,10 +2,6 @@ variable "root_domain_name" {
   default = "bytabit.net"
 }
 
-provider "aws" {
-  region = "us-east-1"
-}
-
 variable "app_version" {
   default = "0.0.0"
 }

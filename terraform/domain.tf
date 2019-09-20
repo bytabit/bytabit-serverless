@@ -28,3 +28,15 @@ resource "aws_route53_record" "sub_domain" {
     evaluate_target_health = false
   }
 }
+
+resource "aws_route53_record" "dojo" {
+  name = "dojo-${terraform.workspace}.${var.root_domain_name}"
+  type = "CNAME"
+  zone_id = "${data.aws_route53_zone.root_domain.zone_id}"
+  ttl = 60
+  records = [
+    "${aws_instance.dojo.public_dns}"]
+  depends_on = [
+    "aws_eip.dojo-eip",
+    "aws_instance.dojo"]
+}

@@ -1,9 +1,3 @@
-## output info about apis
-
-output "base_url" {
-  value = aws_api_gateway_deployment.bytabit.invoke_url
-}
-
 ## toplevel rest api
 
 resource "aws_api_gateway_rest_api" "bytabit" {
