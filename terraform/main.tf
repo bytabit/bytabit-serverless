@@ -1,6 +1,6 @@
 resource "aws_instance" "dojo" {
   ami = data.aws_ami.ubuntu.id
-  instance_type = "c5.large"
+  instance_type = "t3.medium"
   availability_zone = "us-east-1a"
 
   key_name = "${aws_key_pair.dojo-key.key_name}"
